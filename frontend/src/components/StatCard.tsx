@@ -4,14 +4,14 @@ interface StatCardProps {
   title: string;
   value: string | number;
   icon: LucideIcon;
-  color: "clinic" | "blue" | "amber" | "rose";
+  color: "vet" | "accent" | "honey" | "rose";
   trend?: string;
 }
 
 const colors = {
-  clinic: { bg: "bg-clinic-100", text: "text-clinic-600", icon: "text-clinic-600" },
-  blue: { bg: "bg-blue-100", text: "text-blue-600", icon: "text-blue-600" },
-  amber: { bg: "bg-amber-100", text: "text-amber-600", icon: "text-amber-600" },
+  vet: { bg: "bg-vet-100", text: "text-vet-700", icon: "text-vet-600" },
+  accent: { bg: "bg-accent-500/15", text: "text-accent-600", icon: "text-accent-500" },
+  honey: { bg: "bg-honey-400/20", text: "text-amber-700", icon: "text-honey-500" },
   rose: { bg: "bg-rose-100", text: "text-rose-600", icon: "text-rose-600" },
 };
 
@@ -21,9 +21,9 @@ export function StatCard({ title, value, icon: Icon, color, trend }: StatCardPro
     <div className="card group transition hover:shadow-card-hover">
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-sm font-medium text-slate-500">{title}</p>
+          <p className="text-sm font-medium text-vet-500">{title}</p>
           <p className={`mt-2 text-3xl font-bold ${c.text}`}>{value}</p>
-          {trend && <p className="mt-1 text-xs text-slate-400">{trend}</p>}
+          {trend && <p className="mt-1 text-xs text-vet-400">{trend}</p>}
         </div>
         <div className={`rounded-xl ${c.bg} p-3 transition group-hover:scale-105`}>
           <Icon className={c.icon} size={24} />

@@ -141,11 +141,11 @@ export function InventoryPage() {
               </thead>
               <tbody className="divide-y divide-slate-50">
                 {medicines.map((m) => (
-                  <tr key={m.id} className="hover:bg-clinic-50/50">
+                  <tr key={m.id} className="hover:bg-warm-200/80">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-clinic-100">
-                          <Package size={18} className="text-clinic-600" />
+                        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-vet-100">
+                          <Package size={18} className="text-vet-600" />
                         </div>
                         <div>
                           <p className="font-medium text-slate-800">{m.name}</p>
@@ -168,7 +168,7 @@ export function InventoryPage() {
                       ) : m.is_low_stock ? (
                         <span className="badge bg-amber-100 text-amber-700">Baixo</span>
                       ) : (
-                        <span className="badge bg-clinic-100 text-clinic-700">OK</span>
+                        <span className="badge bg-vet-100 text-vet-700">OK</span>
                       )}
                     </td>
                     {isStaff && (
@@ -176,7 +176,7 @@ export function InventoryPage() {
                         <div className="flex gap-2">
                           <button
                             onClick={() => { setMovementModal({ med: m, type: "entrada" }); setMovementForm({ quantity: "", reason: "" }); }}
-                            className="flex items-center gap-1 text-xs font-medium text-pet-500 hover:text-pet-600"
+                            className="flex items-center gap-1 text-xs font-medium text-accent-600 hover:text-accent-500"
                           >
                             <ArrowDownCircle size={16} /> Entrada
                           </button>

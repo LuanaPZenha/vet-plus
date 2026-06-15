@@ -11,7 +11,7 @@ import type { Consultation, Animal, Veterinarian } from "../types";
 const statusLabels: Record<string, { label: string; class: string }> = {
   scheduled: { label: "Agendada", class: "bg-blue-100 text-blue-700" },
   in_progress: { label: "Em andamento", class: "bg-amber-100 text-amber-700" },
-  completed: { label: "Concluída", class: "bg-clinic-100 text-clinic-700" },
+  completed: { label: "Concluída", class: "bg-accent-500/15 text-accent-600" },
   cancelled: { label: "Cancelada", class: "bg-slate-100 text-slate-600" },
 };
 
@@ -121,7 +121,7 @@ export function ConsultationsPage() {
                 {consultations.map((c) => {
                   const st = statusLabels[c.status] || statusLabels.scheduled;
                   return (
-                    <tr key={c.id} className="hover:bg-clinic-50/50">
+                    <tr key={c.id} className="hover:bg-warm-200/80">
                       <td className="px-6 py-4 font-medium">{getAnimalName(c.animal_id)}</td>
                       <td className="px-6 py-4 text-slate-600">{getVetName(c.veterinarian_id)}</td>
                       <td className="px-6 py-4 text-slate-600">{new Date(c.scheduled_at).toLocaleString("pt-BR")}</td>
@@ -133,7 +133,7 @@ export function ConsultationsPage() {
                           {c.status === "scheduled" && (
                             <button
                               onClick={() => setCompleteModal(c)}
-                              className="flex items-center gap-1 text-xs font-medium text-clinic-600 hover:text-clinic-700"
+                              className="flex items-center gap-1 text-xs font-medium text-accent-600 hover:text-accent-500"
                             >
                               <CheckCircle size={16} /> Concluir
                             </button>

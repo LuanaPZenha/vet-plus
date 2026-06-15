@@ -89,7 +89,7 @@ export function ClientsPage() {
               </thead>
               <tbody className="divide-y divide-slate-50">
                 {filtered.map((c) => (
-                  <tr key={c.id} className="transition hover:bg-clinic-50/50">
+                  <tr key={c.id} className="transition hover:bg-warm-200/80">
                     <td className="px-6 py-4 font-medium text-slate-800">{c.nome_completo}</td>
                     <td className="px-6 py-4 text-slate-600">{c.email}</td>
                     <td className="px-6 py-4 text-slate-600">{c.telefone}</td>

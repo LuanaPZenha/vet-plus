@@ -104,7 +104,7 @@ export function VaccinesPage() {
               </thead>
               <tbody className="divide-y divide-slate-50">
                 {vaccines.map((v) => (
-                  <tr key={v.id} className="hover:bg-clinic-50/50">
+                  <tr key={v.id} className="hover:bg-warm-200/80">
                     <td className="px-6 py-4 font-medium">{getAnimalName(v.animal_id)}</td>
                     <td className="px-6 py-4 text-slate-600">{v.vaccine_name}</td>
                     <td className="px-6 py-4 text-slate-600">{new Date(v.application_date).toLocaleDateString("pt-BR")}</td>

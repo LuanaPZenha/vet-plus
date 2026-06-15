@@ -103,7 +103,7 @@ export function AnimalsPage() {
           {filtered.map((a) => (
             <div key={a.id} className="card group transition hover:shadow-card-hover">
               <div className="flex items-start gap-4">
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-clinic-100 text-2xl">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-vet-100 text-2xl">
                   {getEmoji(a.species)}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -113,7 +113,7 @@ export function AnimalsPage() {
                     {a.weight && (
                       <span className="badge bg-slate-100 text-slate-600">{a.weight} kg</span>
                     )}
-                    <span className="badge bg-clinic-100 text-clinic-700">Tutor #{a.client_id}</span>
+                    <span className="badge bg-accent-500/15 text-accent-600">Tutor #{a.client_id}</span>
                   </div>
                 </div>
               </div>

@@ -4,25 +4,25 @@
 
 @layer base {
   body {
-    @apply bg-cream-100 text-slate-800 antialiased;
+    @apply bg-warm-100 text-vet-900 antialiased;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-clinic-600 px-4 py-2.5 text-sm font-semibold text-cream-50 shadow-sm transition hover:bg-clinic-700 focus:outline-none focus:ring-2 focus:ring-clinic-500 focus:ring-offset-2 focus:ring-offset-cream-100 disabled:opacity-50;
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-accent-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-accent-600 focus:outline-none focus:ring-2 focus:ring-accent-400 focus:ring-offset-2 focus:ring-offset-warm-100 disabled:opacity-50;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-clinic-200 bg-cream-50 px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-cream-200 focus:outline-none focus:ring-2 focus:ring-clinic-500 focus:ring-offset-2 focus:ring-offset-cream-100;
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-vet-200 bg-warm-50 px-4 py-2.5 text-sm font-medium text-vet-800 shadow-sm transition hover:bg-warm-200 focus:outline-none focus:ring-2 focus:ring-vet-400 focus:ring-offset-2 focus:ring-offset-warm-100;
   }
 
   .input-field {
-    @apply w-full rounded-lg border border-clinic-200 bg-cream-50 px-3.5 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 transition focus:border-clinic-500 focus:outline-none focus:ring-2 focus:ring-clinic-500/20;
+    @apply w-full rounded-lg border border-vet-200 bg-warm-50 px-3.5 py-2.5 text-sm text-vet-900 placeholder:text-vet-400 transition focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-500/25;
   }
 
   .card {
-    @apply rounded-xl border border-clinic-100 bg-cream-50 p-6 shadow-card;
+    @apply rounded-xl border border-vet-100 bg-warm-50 p-6 shadow-card;
   }
 
   .badge {
@@ -30,11 +30,10 @@
   }
 }
 
-/* Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-thumb {
-  @apply rounded-full bg-clinic-200;
+  @apply rounded-full bg-vet-200;
 }

@@ -30,14 +30,14 @@ export function Sidebar() {
   };
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-30 flex w-64 flex-col bg-gradient-to-b from-clinic-800 to-clinic-900 text-white">
-      <div className="flex items-center gap-3 border-b border-white/10 px-6 py-5">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-pet-500/25">
-          <Heart className="h-5 w-5 text-pet-400" fill="currentColor" />
+    <aside className="fixed inset-y-0 left-0 z-30 flex w-64 flex-col bg-gradient-to-b from-vet-800 via-vet-900 to-[#2a1845] text-warm-50">
+      <div className="flex items-center gap-3 border-b border-vet-600/40 px-6 py-5">
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent-500/30 ring-2 ring-honey-400/40">
+          <Heart className="h-5 w-5 text-honey-400" fill="currentColor" />
         </div>
         <div>
           <h1 className="text-lg font-bold tracking-tight">Vet+ Clinic</h1>
-          <p className="text-xs text-clinic-300">Gestão Veterinária</p>
+          <p className="text-xs text-vet-200">Gestão Veterinária</p>
         </div>
       </div>
 
@@ -50,8 +50,8 @@ export function Sidebar() {
             className={({ isActive }) =>
               `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition ${
                 isActive
-                  ? "bg-pet-500/20 text-cream-50 shadow-sm"
-                  : "text-clinic-200 hover:bg-clinic-700/50 hover:text-cream-50"
+                  ? "bg-accent-500 text-white shadow-md shadow-accent-500/30"
+                  : "text-vet-100 hover:bg-vet-700/60 hover:text-warm-50"
               }`
             }
           >
@@ -61,14 +61,14 @@ export function Sidebar() {
         ))}
       </nav>
 
-      <div className="border-t border-white/10 p-4">
-        <div className="mb-3 rounded-lg bg-white/10 px-3 py-2.5">
+      <div className="border-t border-vet-600/40 p-4">
+        <div className="mb-3 rounded-lg bg-vet-700/50 px-3 py-2.5">
           <p className="truncate text-sm font-medium">{user?.full_name}</p>
-          <p className="truncate text-xs text-clinic-300 capitalize">{user?.role}</p>
+          <p className="truncate text-xs capitalize text-vet-200">{user?.role}</p>
         </div>
         <button
           onClick={handleLogout}
-          className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-clinic-200 transition hover:bg-white/10 hover:text-white"
+          className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-vet-100 transition hover:bg-vet-700/60 hover:text-warm-50"
         >
           <LogOut size={18} />
           Sair

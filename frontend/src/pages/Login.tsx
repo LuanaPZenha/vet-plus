@@ -29,11 +29,10 @@ export function LoginPage() {
 
   return (
     <div className="flex min-h-screen">
-      {/* Painel esquerdo decorativo */}
-      <div className="hidden w-1/2 flex-col justify-between bg-gradient-to-br from-clinic-700 via-clinic-800 to-clinic-900 p-12 text-white lg:flex">
+      <div className="hidden w-1/2 flex-col justify-between bg-gradient-to-br from-vet-700 via-vet-800 to-[#2a1845] p-12 text-warm-50 lg:flex">
         <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-pet-500/25">
-            <Heart size={24} className="text-pet-400" fill="currentColor" />
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent-500/30 ring-2 ring-honey-400/50">
+            <Heart size={24} className="text-honey-400" fill="currentColor" />
           </div>
           <span className="text-2xl font-bold">Vet+ Clinic</span>
         </div>
@@ -42,7 +41,7 @@ export function LoginPage() {
           <h2 className="text-4xl font-bold leading-tight">
             Cuidado completo<br />para seus pacientes
           </h2>
-          <p className="mt-4 max-w-md text-lg text-clinic-200">
+          <p className="mt-4 max-w-md text-lg text-vet-200">
             Gerencie tutores, animais, consultas e vacinas em um só lugar — simples, rápido e profissional.
           </p>
 
@@ -52,35 +51,34 @@ export function LoginPage() {
               { n: "24/7", l: "Disponível" },
               { n: "100%", l: "Seguro" },
             ].map((s) => (
-              <div key={s.l} className="rounded-xl bg-clinic-700/40 p-4 text-center">
-                <p className="text-2xl font-bold">{s.n}</p>
-                <p className="text-xs text-clinic-300">{s.l}</p>
+              <div key={s.l} className="rounded-xl bg-vet-600/40 p-4 text-center ring-1 ring-vet-500/30">
+                <p className="text-2xl font-bold text-honey-400">{s.n}</p>
+                <p className="text-xs text-vet-200">{s.l}</p>
               </div>
             ))}
           </div>
         </div>
 
-        <p className="text-sm text-clinic-400">© 2024 Vet+ Clinic — Engenharia de Software</p>
+        <p className="text-sm text-vet-300">© 2024 Vet+ Clinic — Engenharia de Software</p>
       </div>
 
-      {/* Formulário */}
-      <div className="flex flex-1 items-center justify-center bg-cream-100 p-8">
+      <div className="flex flex-1 items-center justify-center bg-warm-100 p-8">
         <div className="w-full max-w-md">
           <div className="mb-8 lg:hidden">
-            <div className="flex items-center gap-2 text-clinic-700">
-              <Heart size={28} fill="currentColor" />
+            <div className="flex items-center gap-2 text-vet-700">
+              <Heart size={28} className="text-accent-500" fill="currentColor" />
               <span className="text-xl font-bold">Vet+ Clinic</span>
             </div>
           </div>
 
-          <h1 className="text-2xl font-bold text-slate-900">Entrar no sistema</h1>
-          <p className="mt-2 text-sm text-slate-500">Acesse o painel da clínica veterinária</p>
+          <h1 className="text-2xl font-bold text-vet-900">Entrar no sistema</h1>
+          <p className="mt-2 text-sm text-vet-500">Acesse o painel da clínica veterinária</p>
 
           <form onSubmit={handleSubmit} className="mt-8 space-y-5">
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-700">E-mail</label>
+              <label className="mb-1.5 block text-sm font-medium text-vet-700">E-mail</label>
               <div className="relative">
-                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-vet-400" size={18} />
                 <input
                   type="email"
                   value={email}
@@ -93,9 +91,9 @@ export function LoginPage() {
             </div>
 
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-700">Senha</label>
+              <label className="mb-1.5 block text-sm font-medium text-vet-700">Senha</label>
               <div className="relative">
-                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-vet-400" size={18} />
                 <input
                   type="password"
                   value={password}
@@ -113,7 +111,7 @@ export function LoginPage() {
             </button>
           </form>
 
-          <p className="mt-6 text-center text-xs text-slate-400">
+          <p className="mt-6 text-center text-xs text-vet-400">
             Demo: admin@vet.com / senha1234
           </p>
         </div>
