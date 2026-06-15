@@ -168,7 +168,7 @@ export function InventoryPage() {
                       ) : m.is_low_stock ? (
                         <span className="badge bg-amber-100 text-amber-700">Baixo</span>
                       ) : (
-                        <span className="badge bg-emerald-100 text-emerald-700">OK</span>
+                        <span className="badge bg-clinic-100 text-clinic-700">OK</span>
                       )}
                     </td>
                     {isStaff && (
@@ -176,7 +176,7 @@ export function InventoryPage() {
                         <div className="flex gap-2">
                           <button
                             onClick={() => { setMovementModal({ med: m, type: "entrada" }); setMovementForm({ quantity: "", reason: "" }); }}
-                            className="flex items-center gap-1 text-xs font-medium text-emerald-600 hover:text-emerald-700"
+                            className="flex items-center gap-1 text-xs font-medium text-pet-500 hover:text-pet-600"
                           >
                             <ArrowDownCircle size={16} /> Entrada
                           </button>

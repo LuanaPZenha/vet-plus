@@ -10,7 +10,7 @@ import type { Consultation, UpcomingVaccine } from "../types";
 const statusLabels: Record<string, { label: string; class: string }> = {
   scheduled: { label: "Agendada", class: "bg-blue-100 text-blue-700" },
   in_progress: { label: "Em andamento", class: "bg-amber-100 text-amber-700" },
-  completed: { label: "Concluída", class: "bg-emerald-100 text-emerald-700" },
+  completed: { label: "Concluída", class: "bg-clinic-100 text-clinic-700" },
   cancelled: { label: "Cancelada", class: "bg-slate-100 text-slate-600" },
 };
 
@@ -61,11 +61,11 @@ export function DashboardPage() {
       <Header title="Dashboard" subtitle="Visão geral da clínica veterinária" />
 
       <div className="mb-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-        <StatCard title="Tutores cadastrados" value={stats.clients} icon={Users} color="teal" />
+        <StatCard title="Tutores cadastrados" value={stats.clients} icon={Users} color="clinic" />
         <StatCard title="Animais ativos" value={stats.animals} icon={PawPrint} color="blue" />
         <StatCard title="Consultas agendadas" value={stats.consultations} icon={CalendarClock} color="amber" />
         <StatCard title="Vacinas registradas" value={stats.vaccines} icon={Syringe} color="rose" />
-        <StatCard title="Medicamentos em estoque" value={stats.medicines} icon={Package} color="teal" trend={stats.lowStock > 0 ? `${stats.lowStock} com estoque baixo` : undefined} />
+        <StatCard title="Medicamentos em estoque" value={stats.medicines} icon={Package} color="clinic" trend={stats.lowStock > 0 ? `${stats.lowStock} com estoque baixo` : undefined} />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">

@@ -32,8 +32,8 @@ export function LoginPage() {
       {/* Painel esquerdo decorativo */}
       <div className="hidden w-1/2 flex-col justify-between bg-gradient-to-br from-clinic-700 via-clinic-800 to-clinic-900 p-12 text-white lg:flex">
         <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/15">
-            <Heart size={24} fill="currentColor" />
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-pet-500/25">
+            <Heart size={24} className="text-pet-400" fill="currentColor" />
           </div>
           <span className="text-2xl font-bold">Vet+ Clinic</span>
         </div>
@@ -52,7 +52,7 @@ export function LoginPage() {
               { n: "24/7", l: "Disponível" },
               { n: "100%", l: "Seguro" },
             ].map((s) => (
-              <div key={s.l} className="rounded-xl bg-white/10 p-4 text-center">
+              <div key={s.l} className="rounded-xl bg-clinic-700/40 p-4 text-center">
                 <p className="text-2xl font-bold">{s.n}</p>
                 <p className="text-xs text-clinic-300">{s.l}</p>
               </div>
@@ -64,7 +64,7 @@ export function LoginPage() {
       </div>
 
       {/* Formulário */}
-      <div className="flex flex-1 items-center justify-center p-8">
+      <div className="flex flex-1 items-center justify-center bg-cream-100 p-8">
         <div className="w-full max-w-md">
           <div className="mb-8 lg:hidden">
             <div className="flex items-center gap-2 text-clinic-700">

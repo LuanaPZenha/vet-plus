@@ -11,7 +11,7 @@ import type { Consultation, Animal, Veterinarian } from "../types";
 const statusLabels: Record<string, { label: string; class: string }> = {
   scheduled: { label: "Agendada", class: "bg-blue-100 text-blue-700" },
   in_progress: { label: "Em andamento", class: "bg-amber-100 text-amber-700" },
-  completed: { label: "Concluída", class: "bg-emerald-100 text-emerald-700" },
+  completed: { label: "Concluída", class: "bg-clinic-100 text-clinic-700" },
   cancelled: { label: "Cancelada", class: "bg-slate-100 text-slate-600" },
 };
 

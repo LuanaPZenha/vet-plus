@@ -4,12 +4,12 @@ interface StatCardProps {
   title: string;
   value: string | number;
   icon: LucideIcon;
-  color: "teal" | "blue" | "amber" | "rose";
+  color: "clinic" | "blue" | "amber" | "rose";
   trend?: string;
 }
 
 const colors = {
-  teal: { bg: "bg-clinic-100", text: "text-clinic-600", icon: "text-clinic-600" },
+  clinic: { bg: "bg-clinic-100", text: "text-clinic-600", icon: "text-clinic-600" },
   blue: { bg: "bg-blue-100", text: "text-blue-600", icon: "text-blue-600" },
   amber: { bg: "bg-amber-100", text: "text-amber-600", icon: "text-amber-600" },
   rose: { bg: "bg-rose-100", text: "text-rose-600", icon: "text-rose-600" },

@@ -32,8 +32,8 @@ export function Sidebar() {
   return (
     <aside className="fixed inset-y-0 left-0 z-30 flex w-64 flex-col bg-gradient-to-b from-clinic-800 to-clinic-900 text-white">
       <div className="flex items-center gap-3 border-b border-white/10 px-6 py-5">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/15">
-          <Heart className="h-5 w-5 text-clinic-200" fill="currentColor" />
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-pet-500/25">
+          <Heart className="h-5 w-5 text-pet-400" fill="currentColor" />
         </div>
         <div>
           <h1 className="text-lg font-bold tracking-tight">Vet+ Clinic</h1>
@@ -50,8 +50,8 @@ export function Sidebar() {
             className={({ isActive }) =>
               `flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition ${
                 isActive
-                  ? "bg-white/15 text-white shadow-sm"
-                  : "text-clinic-200 hover:bg-white/10 hover:text-white"
+                  ? "bg-pet-500/20 text-cream-50 shadow-sm"
+                  : "text-clinic-200 hover:bg-clinic-700/50 hover:text-cream-50"
               }`
             }
           >
