@@ -1,0 +1,279 @@
+version: "3.9"
+
+services:
+  # ==================== BANCOS DE DADOS ====================
+  auth-db:
+    image: postgres:16-alpine
+    container_name: vet-auth-db
+    environment:
+      POSTGRES_DB: auth_db
+      POSTGRES_USER: vet_user
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-vet_secret_2024}
+    volumes:
+      - auth_db_data:/var/lib/postgresql/data
+    networks:
+      - vet-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vet_user -d auth_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  clients-db:
+    image: postgres:16-alpine
+    container_name: vet-clients-db
+    environment:
+      POSTGRES_DB: clients_db
+      POSTGRES_USER: vet_user
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-vet_secret_2024}
+    volumes:
+      - clients_db_data:/var/lib/postgresql/data
+    networks:
+      - vet-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vet_user -d clients_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  animals-db:
+    image: postgres:16-alpine
+    container_name: vet-animals-db
+    environment:
+      POSTGRES_DB: animals_db
+      POSTGRES_USER: vet_user
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-vet_secret_2024}
+    volumes:
+      - animals_db_data:/var/lib/postgresql/data
+    networks:
+      - vet-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vet_user -d animals_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  consultations-db:
+    image: postgres:16-alpine
+    container_name: vet-consultations-db
+    environment:
+      POSTGRES_DB: consultations_db
+      POSTGRES_USER: vet_user
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-vet_secret_2024}
+    volumes:
+      - consultations_db_data:/var/lib/postgresql/data
+    networks:
+      - vet-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vet_user -d consultations_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  vaccination-db:
+    image: postgres:16-alpine
+    container_name: vet-vaccination-db
+    environment:
+      POSTGRES_DB: vaccination_db
+      POSTGRES_USER: vet_user
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-vet_secret_2024}
+    volumes:
+      - vaccination_db_data:/var/lib/postgresql/data
+    networks:
+      - vet-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vet_user -d vaccination_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  inventory-db:
+    image: postgres:16-alpine
+    container_name: vet-inventory-db
+    environment:
+      POSTGRES_DB: inventory_db
+      POSTGRES_USER: vet_user
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-vet_secret_2024}
+    volumes:
+      - inventory_db_data:/var/lib/postgresql/data
+    networks:
+      - vet-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vet_user -d inventory_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # ==================== MICROSSERVIÇOS ====================
+  auth-service:
+    build:
+      context: .
+      dockerfile: services/auth/Dockerfile
+    container_name: vet-auth-service
+    ports:
+      - "8001:8000"
+    environment:
+      DATABASE_URL: postgres://vet_user:${DB_PASSWORD:-vet_secret_2024}@auth-db:5432/auth_db
+      SECRET_KEY: ${SECRET_KEY:-django-insecure-vet-auth-key-change-in-production}
+      DEBUG: ${DEBUG:-False}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1,auth-service}
+    depends_on:
+      auth-db:
+        condition: service_healthy
+    networks:
+      - vet-network
+    restart: unless-stopped
+
+  clients-service:
+    build:
+      context: .
+      dockerfile: services/clients/Dockerfile
+    container_name: vet-clients-service
+    ports:
+      - "8002:8000"
+    environment:
+      DATABASE_URL: postgres://vet_user:${DB_PASSWORD:-vet_secret_2024}@clients-db:5432/clients_db
+      SECRET_KEY: ${SECRET_KEY:-django-insecure-vet-auth-key-change-in-production}
+      DEBUG: ${DEBUG:-False}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1,clients-service}
+      AUTH_SERVICE_URL: http://auth-service:8000
+    depends_on:
+      clients-db:
+        condition: service_healthy
+      auth-service:
+        condition: service_started
+    networks:
+      - vet-network
+    restart: unless-stopped
+
+  animals-service:
+    build:
+      context: .
+      dockerfile: services/animals/Dockerfile
+    container_name: vet-animals-service
+    ports:
+      - "8003:8000"
+    environment:
+      DATABASE_URL: postgres://vet_user:${DB_PASSWORD:-vet_secret_2024}@animals-db:5432/animals_db
+      SECRET_KEY: ${SECRET_KEY:-django-insecure-vet-auth-key-change-in-production}
+      DEBUG: ${DEBUG:-False}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1,animals-service}
+      AUTH_SERVICE_URL: http://auth-service:8000
+      CLIENTS_SERVICE_URL: http://clients-service:8000
+    depends_on:
+      animals-db:
+        condition: service_healthy
+      auth-service:
+        condition: service_started
+    networks:
+      - vet-network
+    restart: unless-stopped
+
+  consultations-service:
+    build:
+      context: .
+      dockerfile: services/consultations/Dockerfile
+    container_name: vet-consultations-service
+    ports:
+      - "8004:8000"
+    environment:
+      DATABASE_URL: postgres://vet_user:${DB_PASSWORD:-vet_secret_2024}@consultations-db:5432/consultations_db
+      SECRET_KEY: ${SECRET_KEY:-django-insecure-vet-auth-key-change-in-production}
+      DEBUG: ${DEBUG:-False}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1,consultations-service}
+      AUTH_SERVICE_URL: http://auth-service:8000
+      ANIMALS_SERVICE_URL: http://animals-service:8000
+    depends_on:
+      consultations-db:
+        condition: service_healthy
+      auth-service:
+        condition: service_started
+      animals-service:
+        condition: service_started
+    networks:
+      - vet-network
+    restart: unless-stopped
+
+  vaccination-service:
+    build:
+      context: .
+      dockerfile: services/vaccination/Dockerfile
+    container_name: vet-vaccination-service
+    ports:
+      - "8005:8000"
+    environment:
+      DATABASE_URL: postgres://vet_user:${DB_PASSWORD:-vet_secret_2024}@vaccination-db:5432/vaccination_db
+      SECRET_KEY: ${SECRET_KEY:-django-insecure-vet-auth-key-change-in-production}
+      DEBUG: ${DEBUG:-False}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1,vaccination-service}
+      AUTH_SERVICE_URL: http://auth-service:8000
+      ANIMALS_SERVICE_URL: http://animals-service:8000
+    depends_on:
+      vaccination-db:
+        condition: service_healthy
+      auth-service:
+        condition: service_started
+      animals-service:
+        condition: service_started
+    networks:
+      - vet-network
+    restart: unless-stopped
+
+  inventory-service:
+    build:
+      context: .
+      dockerfile: services/inventory/Dockerfile
+    container_name: vet-inventory-service
+    ports:
+      - "8006:8000"
+    environment:
+      DATABASE_URL: postgres://vet_user:${DB_PASSWORD:-vet_secret_2024}@inventory-db:5432/inventory_db
+      SECRET_KEY: ${SECRET_KEY:-django-insecure-vet-auth-key-change-in-production}
+      DEBUG: ${DEBUG:-False}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1,inventory-service}
+      AUTH_SERVICE_URL: http://auth-service:8000
+    depends_on:
+      inventory-db:
+        condition: service_healthy
+      auth-service:
+        condition: service_started
+    networks:
+      - vet-network
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: vet-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      auth-service:
+        condition: service_started
+      clients-service:
+        condition: service_started
+      animals-service:
+        condition: service_started
+      consultations-service:
+        condition: service_started
+      vaccination-service:
+        condition: service_started
+      inventory-service:
+        condition: service_started
+    networks:
+      - vet-network
+    restart: unless-stopped
+
+networks:
+  vet-network:
+    driver: bridge
+    name: vet-clinic-network
+
+volumes:
+  auth_db_data:
+  clients_db_data:
+  animals_db_data:
+  consultations_db_data:
+  vaccination_db_data:
+  inventory_db_data:

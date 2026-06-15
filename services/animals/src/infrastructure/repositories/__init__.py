@@ -1,0 +1,1 @@
+"""Repositórios infra package."""
