@@ -12,7 +12,7 @@ services:
     name: vet-plus-auth
     runtime: docker
     plan: free
-    dockerfilePath: ./services/auth/Dockerfile
+    dockerfilePath: ./Dockerfile
     dockerContext: .
     healthCheckPath: /api/docs/
     envVars:
