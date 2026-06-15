@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Amoxicilina 500mg",
+    "generic_name": "Amoxicilina",
+    "category": "antibiotico",
+    "unit": "comp",
+    "quantity": "150.00",
+    "min_stock": "30.00",
+    "batch_number": "AMX-2401",
+    "expiration_date": "2027-06-30",
+    "supplier": "VetFarma Ltda",
+    "unit_price": "2.50"
+  },
+  {
+    "name": "Dipirona 50mg/ml",
+    "generic_name": "Dipirona",
+    "category": "analgesico",
+    "unit": "ml",
+    "quantity": "500.00",
+    "min_stock": "80.00",
+    "batch_number": "DIP-2402",
+    "expiration_date": "2027-12-31",
+    "supplier": "MedVet Distribuidora",
+    "unit_price": "0.85"
+  },
+  {
+    "name": "Vacina V10",
+    "generic_name": "Polivalente canina",
+    "category": "vacina",
+    "unit": "dose",
+    "quantity": "45.00",
+    "min_stock": "15.00",
+    "batch_number": "VAC-2026-A",
+    "expiration_date": "2026-12-31",
+    "supplier": "BioVet Imunobiológicos",
+    "unit_price": "35.00"
+  }
+]

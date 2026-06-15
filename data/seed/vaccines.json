@@ -1,0 +1,26 @@
+[
+  {
+    "animal_index": 0,
+    "vaccine_name": "V10 (Polivalente)",
+    "application_date": "2026-01-10",
+    "next_dose_date": "2026-07-10",
+    "batch_number": "VAC-2026-001",
+    "notes": "Primeira dose do protocolo anual"
+  },
+  {
+    "animal_index": 1,
+    "vaccine_name": "Antirrábica",
+    "application_date": "2026-02-15",
+    "next_dose_date": "2027-02-15",
+    "batch_number": "VAC-2026-002",
+    "notes": "Reforço anual obrigatório"
+  },
+  {
+    "animal_index": 2,
+    "vaccine_name": "Giardia",
+    "application_date": "2026-03-01",
+    "next_dose_date": "2026-09-01",
+    "batch_number": "VAC-2026-003",
+    "notes": "Protocolo filhote — segunda dose"
+  }
+]

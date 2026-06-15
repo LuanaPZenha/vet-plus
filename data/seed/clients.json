@@ -1,0 +1,23 @@
+[
+  {
+    "nome_completo": "Maria Souza",
+    "email": "maria.souza@email.com",
+    "telefone": "11987654321",
+    "cpf": "123.456.789-01",
+    "endereco": "Rua das Palmeiras, 120 - São Paulo, SP"
+  },
+  {
+    "nome_completo": "Carlos Lima",
+    "email": "carlos.lima@email.com",
+    "telefone": "11976543210",
+    "cpf": "234.567.890-12",
+    "endereco": "Av. Brasil, 450 - Campinas, SP"
+  },
+  {
+    "nome_completo": "Ana Costa",
+    "email": "ana.costa@email.com",
+    "telefone": "11965432109",
+    "cpf": "345.678.901-23",
+    "endereco": "Rua Ipê, 78 - Santos, SP"
+  }
+]

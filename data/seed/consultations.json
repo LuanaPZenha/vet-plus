@@ -1,0 +1,20 @@
+[
+  {
+    "animal_index": 0,
+    "scheduled_at": "2026-06-20T10:00:00Z",
+    "type": "regular",
+    "notes": "Check-up anual e avaliação nutricional"
+  },
+  {
+    "animal_index": 1,
+    "scheduled_at": "2026-06-21T14:30:00Z",
+    "type": "emergency",
+    "notes": "Vômito recorrente nas últimas 24 horas"
+  },
+  {
+    "animal_index": 2,
+    "scheduled_at": "2026-06-22T09:00:00Z",
+    "type": "surgery",
+    "notes": "Castração eletiva com exames pré-operatórios"
+  }
+]

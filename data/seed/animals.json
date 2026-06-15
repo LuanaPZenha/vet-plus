@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Rex",
+    "species": "Cão",
+    "breed": "Labrador Retriever",
+    "birth_date": "2020-05-10",
+    "weight": "28.50",
+    "client_index": 0
+  },
+  {
+    "name": "Mimi",
+    "species": "Gato",
+    "breed": "Siamês",
+    "birth_date": "2021-03-15",
+    "weight": "4.20",
+    "client_index": 1
+  },
+  {
+    "name": "Thor",
+    "species": "Cão",
+    "breed": "Pastor Alemão",
+    "birth_date": "2019-11-01",
+    "weight": "35.00",
+    "client_index": 2
+  }
+]
