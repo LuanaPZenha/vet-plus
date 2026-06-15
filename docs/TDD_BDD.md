@@ -1,4 +1,4 @@
-# TDD e BDD — Vet+ Clinic
+# TDD e BDD — Vet Plus+
 
 ## Test Driven Development (TDD)
 

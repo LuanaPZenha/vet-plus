@@ -1,6 +1,6 @@
-# Guia de Deploy — Vet+ Clinic em Ubuntu Server
+# Guia de Deploy — Vet Plus+ em Ubuntu Server
 
-Este guia descreve o processo completo de deploy do sistema Vet+ Clinic em um servidor Linux Ubuntu.
+Este guia descreve o processo completo de deploy do sistema Vet Plus+ em um servidor Linux Ubuntu.
 
 ---
 
@@ -332,7 +332,7 @@ sudo nano /etc/systemd/system/vet-plus.service
 
 ```ini
 [Unit]
-Description=Vet+ Clinic Microservices
+Description=Vet Plus+ Microservices
 Requires=docker.service
 After=docker.service
 

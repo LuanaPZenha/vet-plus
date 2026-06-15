@@ -1,4 +1,4 @@
-"""Configuração base Django para microsserviços Vet+."""
+"""Configuração base Django para microsserviços Vet Plus+."""
 
 import os
 from pathlib import Path
@@ -90,7 +90,7 @@ def get_common_settings(base_dir: Path, service_name: str) -> dict:
             "DEFAULT_PERMISSION_CLASSES": [],
         },
         "SPECTACULAR_SETTINGS": {
-            "TITLE": f"Vet+ Clinic - {service_name}",
+            "TITLE": f"Vet Plus+ - {service_name}",
             "DESCRIPTION": f"API REST do microsserviço {service_name}",
             "VERSION": "1.0.0",
             "SERVE_INCLUDE_SCHEMA": False,

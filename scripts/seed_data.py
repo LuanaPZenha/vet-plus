@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Popula os microsserviços Vet+ com dados de demonstração."""
+"""Popula os microsserviços Vet Plus+ com dados de demonstração."""
 
 from __future__ import annotations
 
@@ -151,7 +151,7 @@ def seed_medicines(token: str) -> None:
 
 
 def main() -> int:
-    print("Vet+ — seed de dados de demonstração\n")
+    print("Vet Plus+ — seed de dados de demonstração\n")
 
     token, user_id = login()
     print(f"Autenticado como user_id={user_id}\n")

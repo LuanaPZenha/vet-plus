@@ -1,1 +1,1 @@
-"""Utilitários compartilhados entre microsserviços Vet+."""
+"""Utilitários compartilhados entre microsserviços Vet Plus+."""

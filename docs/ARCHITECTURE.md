@@ -1,4 +1,4 @@
-# Arquitetura — Vet+ Clinic
+# Arquitetura — Vet Plus+
 
 ## 1. Arquitetura Limpa (Clean Architecture)
 

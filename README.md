@@ -1,4 +1,4 @@
-# Vet+ Clinic — Sistema de Gerenciamento para Clínica Veterinária
+# Vet Plus+ — Sistema de Gerenciamento para Clínica Veterinária
 
 Projeto acadêmico de Engenharia de Software demonstrando **Arquitetura Limpa**, **Microsserviços**, **SOLID**, **Design Patterns**, **TDD**, **BDD**, **Docker** e **API REST** com documentação Swagger.
 
@@ -20,7 +20,7 @@ Projeto acadêmico de Engenharia de Software demonstrando **Arquitetura Limpa**,
 
 ## Visão Geral
 
-O **Vet+ Clinic** é um sistema distribuído para gerenciamento de clínicas veterinárias, composto por **5 microsserviços independentes**, cada um com banco PostgreSQL próprio, API REST documentada e testes automatizados.
+O **Vet Plus+** é um sistema distribuído para gerenciamento de clínicas veterinárias, composto por **5 microsserviços independentes**, cada um com banco PostgreSQL próprio, API REST documentada e testes automatizados.
 
 ### Funcionalidades
 
@@ -81,7 +81,7 @@ graph TB
         APP[Aplicação / Frontend]
     end
 
-    subgraph "Vet+ Clinic - Rede Docker (vet-clinic-network)"
+    subgraph "Vet Plus+ - Rede Docker (vet-clinic-network)"
         AUTH[Auth Service<br/>:8001]
         CLIENTS[Clients Service<br/>:8002]
         ANIMALS[Animals Service<br/>:8003]
@@ -171,7 +171,7 @@ Cada serviço expõe documentação Swagger em `/api/docs/`.
 ## Estrutura de Diretórios
 
 ```
-Vet+/
+vet-plus/
 ├── docker-compose.yml          # Orquestração de todos os serviços
 ├── .env.example                # Variáveis de ambiente
 ├── shared/                     # Utilitários compartilhados (JWT, settings)
@@ -202,7 +202,7 @@ Vet+/
 
 ```bash
 # 1. Clone e entre no diretório
-cd Vet+
+cd vet-plus
 
 # 2. Configure variáveis de ambiente
 cp .env.example .env

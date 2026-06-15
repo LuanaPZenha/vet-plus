@@ -1,4 +1,4 @@
-# Princípios SOLID — Vet+ Clinic
+# Princípios SOLID — Vet Plus+
 
 Este documento explica cada princípio SOLID com conceito, exemplo real do projeto e trecho de código correspondente.
 

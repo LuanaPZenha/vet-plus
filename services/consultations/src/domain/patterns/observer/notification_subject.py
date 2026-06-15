@@ -66,7 +66,7 @@ class EmailNotificationObserver(NotificationObserver):
         self.sent_emails.append(
             {
                 "to": f"tutor-animal-{event.animal_id}@vetplus.com",
-                "subject": "Consulta agendada - Vet+",
+                "subject": "Consulta agendada - Vet Plus+",
                 "body": event.message,
             }
         )

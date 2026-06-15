@@ -1,6 +1,6 @@
 # language: pt
 Funcionalidade: Registro de Animais
-  Como veterinário da clínica Vet+
+  Como veterinário da clínica Vet Plus+
   Quero registrar animais no sistema
   Para gerenciar o prontuário dos pacientes
 

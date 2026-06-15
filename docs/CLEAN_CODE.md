@@ -1,4 +1,4 @@
-# Clean Code — Vet+ Clinic
+# Vet Plus+
 
 Este documento explica as práticas de Clean Code aplicadas no projeto, com exemplos concretos de onde cada prática foi implementada.
 

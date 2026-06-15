@@ -34,7 +34,7 @@ export function LoginPage() {
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-accent-500/30 ring-2 ring-honey-400/50">
             <Heart size={24} className="text-honey-400" fill="currentColor" />
           </div>
-          <span className="text-2xl font-bold">Vet+ Clinic</span>
+          <span className="text-2xl font-bold">Vet Plus+</span>
         </div>
 
         <div>
@@ -59,7 +59,7 @@ export function LoginPage() {
           </div>
         </div>
 
-        <p className="text-sm text-vet-300">© 2024 Vet+ Clinic — Engenharia de Software</p>
+        <p className="text-sm text-vet-300">© 2024 Vet Plus+ — Engenharia de Software</p>
       </div>
 
       <div className="flex flex-1 items-center justify-center bg-warm-100 p-8">
@@ -67,7 +67,7 @@ export function LoginPage() {
           <div className="mb-8 lg:hidden">
             <div className="flex items-center gap-2 text-vet-700">
               <Heart size={28} className="text-accent-500" fill="currentColor" />
-              <span className="text-xl font-bold">Vet+ Clinic</span>
+              <span className="text-xl font-bold">Vet Plus+</span>
             </div>
           </div>
 

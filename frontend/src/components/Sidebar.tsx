@@ -36,7 +36,7 @@ export function Sidebar() {
           <Heart className="h-5 w-5 text-honey-400" fill="currentColor" />
         </div>
         <div>
-          <h1 className="text-lg font-bold tracking-tight">Vet+ Clinic</h1>
+          <h1 className="text-lg font-bold tracking-tight">Vet Plus+</h1>
           <p className="text-xs text-vet-200">Gestão Veterinária</p>
         </div>
       </div>

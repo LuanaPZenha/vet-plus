@@ -11,7 +11,7 @@ Funcionalidade: Cadastro de clientes (tutores)
       | email         | ana.santos@email.com    |
       | telefone      | 11987654321             |
       | cpf           | 123.456.789-09          |
-      | endereco      | Rua Vet+, 123 - São Paulo |
+      | endereco      | Rua Vet Plus+, 123 - São Paulo |
     Então o cadastro deve ser realizado com sucesso
     E a resposta deve conter o nome "Ana Paula Santos"
     E a resposta deve conter o e-mail "ana.santos@email.com"

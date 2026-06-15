@@ -1,6 +1,6 @@
 # language: pt
 Funcionalidade: Controle de Vacinação
-  Como veterinário da clínica Vet+
+  Como veterinário da clínica Vet Plus+
   Quero registrar vacinas aplicadas nos animais
   Para controlar o calendário de vacinação e lembretes
 

@@ -1,6 +1,6 @@
 # language: pt
 Funcionalidade: Agendamento de consulta
-  Como tutor ou veterinário da clínica Vet+
+  Como tutor ou veterinário da clínica Vet Plus+
   Quero agendar consultas veterinárias
   Para que os animais recebam atendimento adequado
 

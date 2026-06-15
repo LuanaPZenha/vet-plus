@@ -1,6 +1,6 @@
 # Deploy no Railway — microsserviço Auth (Opção A)
 
-Publica a **API de autenticação** do Vet+ no Railway usando `start.sh` na raiz.
+Publica a **API de autenticação** do Vet Plus+ no Railway usando `start.sh` na raiz.
 
 > O sistema completo (6 APIs + frontend) continua rodando localmente com `docker compose up`.
 

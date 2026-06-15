@@ -1,4 +1,4 @@
-# Design Patterns — Vet+ Clinic
+# Vet Plus+
 
 Este documento detalha cada Design Pattern implementado no projeto, com explicação conceitual, localização no código e exemplos.
 
