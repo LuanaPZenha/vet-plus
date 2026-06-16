@@ -22,10 +22,15 @@ const RENDER_DEFAULTS: Record<string, string> = {
   INVENTORY_URL: "https://vet-plus-inventory.onrender.com",
 };
 
-function serviceBase(
-  runtimeKey: keyof NonNullable<Window["__VET_PLUS_ENV__"]>,
-  viteKey: string,
-): string {
+type ServiceUrlKey = Exclude<keyof VetPlusRuntimeEnv, "USE_API_PROXY">;
+
+function useApiProxy(): boolean {
+  const runtime = typeof window !== "undefined" ? window.__VET_PLUS_ENV__ : undefined;
+  return runtime?.USE_API_PROXY === true;
+}
+
+function serviceBase(runtimeKey: ServiceUrlKey, viteKey: string): string {
+  if (useApiProxy() || import.meta.env.DEV) return "";
   const runtime = typeof window !== "undefined" ? window.__VET_PLUS_ENV__ : undefined;
   return (
     runtime?.[runtimeKey] ??

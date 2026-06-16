@@ -1,6 +1,7 @@
 /// <reference types="vite/client" />
 
 interface VetPlusRuntimeEnv {
+  USE_API_PROXY?: boolean;
   AUTH_URL?: string;
   CLIENTS_URL?: string;
   ANIMALS_URL?: string;

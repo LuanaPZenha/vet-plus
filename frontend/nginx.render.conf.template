@@ -7,6 +7,76 @@ server {
     gzip on;
     gzip_types text/plain text/css application/json application/javascript text/xml;
 
+    location /api/login {
+        proxy_pass ${AUTH_URL}/api/login;
+        proxy_ssl_server_name on;
+        proxy_set_header Host ${AUTH_HOST};
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_connect_timeout 120s;
+        proxy_read_timeout 120s;
+    }
+
+    location /api/register {
+        proxy_pass ${AUTH_URL}/api/register;
+        proxy_ssl_server_name on;
+        proxy_set_header Host ${AUTH_HOST};
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_connect_timeout 120s;
+        proxy_read_timeout 120s;
+    }
+
+    location /api/clientes {
+        proxy_pass http://127.0.0.1:8002/api/clientes;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location /api/animais {
+        proxy_pass http://127.0.0.1:8003/api/animais;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location /api/consultas {
+        proxy_pass http://127.0.0.1:8004/api/consultas;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location /api/veterinarios {
+        proxy_pass http://127.0.0.1:8004/api/veterinarios;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location /api/vacinas {
+        proxy_pass http://127.0.0.1:8005/api/vacinas;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    location /api/medicamentos {
+        proxy_pass http://127.0.0.1:8006/api/medicamentos;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
     location / {
         try_files $uri $uri/ /index.html;
     }

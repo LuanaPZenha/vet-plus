@@ -28,4 +28,4 @@ REST_FRAMEWORK = {
 }
 
 # URL do microsserviço de animais (usado pelo Facade em produção)
-ANIMALS_SERVICE_URL = __import__("os").environ.get("ANIMALS_SERVICE_URL", "http://localhost:8002")
+ANIMALS_SERVICE_URL = __import__("os").environ.get("ANIMALS_SERVICE_URL", "http://127.0.0.1:8003")

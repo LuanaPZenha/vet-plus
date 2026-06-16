@@ -4,17 +4,12 @@
 
 **https://vet-plus.onrender.com** abre o **dashboard React** (login, clientes, animais, etc.).
 
-As APIs ficam em serviços separados; o nginx do frontend faz proxy de `/api/*` para cada microsserviço (igual ao `docker compose` local).
+No Render, o serviço **vet-plus** (frontend) embute os microsserviços de clientes, animais, consultas, vacinação e estoque. O nginx faz proxy de `/api/*` para essas APIs locais e para o auth externo — igual ao `docker compose` local.
 
 | Serviço | URL |
 |---------|-----|
-| **App (frontend)** | https://vet-plus.onrender.com |
+| **App (frontend + APIs)** | https://vet-plus.onrender.com |
 | Auth | https://vet-plus-auth.onrender.com |
-| Clientes | https://vet-plus-clients.onrender.com |
-| Animais | https://vet-plus-animals.onrender.com |
-| Consultas | https://vet-plus-consultations.onrender.com |
-| Vacinação | https://vet-plus-vaccination.onrender.com |
-| Estoque | https://vet-plus-inventory.onrender.com |
 
 ---
 
@@ -42,11 +37,17 @@ Se hoje `vet-plus` roda a API de auth:
 ## Testar
 
 1. Abra https://vet-plus.onrender.com
-2. Registre um usuário ou use credenciais criadas via `/api/register/` na auth
-3. Navegue pelo dashboard
+2. Entre com o usuário demo (criado automaticamente no deploy do auth):
+   - **E-mail:** `admin@vet.com`
+   - **Senha:** `senha1234`
+3. Ou registre outro usuário via `/api/register/` na auth
+
+Para desativar a criação automática do demo, defina `SKIP_DEMO_USER=true` no serviço `vet-plus-auth`.
+
+**Importante:** o serviço `vet-plus` precisa da mesma `SECRET_KEY` do auth (grupo `vet-shared` no blueprint) para validar tokens JWT.
 
 ---
 
 ## Plano free
 
-Cada serviço hiberna após ~15 min sem uso. A primeira requisição pode demorar ~50s. São 7 web services + 6 bancos.
+O frontend hiberna após ~15 min sem uso. A primeira requisição pode demorar ~50s. São 2 web services (frontend + auth) + 1 banco (auth).

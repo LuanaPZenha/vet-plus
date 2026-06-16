@@ -45,6 +45,7 @@ services:
     dockerContext: .
     healthCheckPath: /
     envVars:
+      - fromGroup: vet-shared
       - key: AUTH_URL
         fromService:
           type: web
