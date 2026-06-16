@@ -13,14 +13,13 @@ import type {
 const TOKEN_KEY = "vetplus_token";
 const USER_KEY = "vetplus_user";
 
-const runtime = typeof window !== "undefined" ? window.__VET_PLUS_ENV__ : undefined;
-
-const AUTH_BASE = runtime?.AUTH_URL ?? import.meta.env.VITE_AUTH_URL ?? "";
-const CLIENTS_BASE = runtime?.CLIENTS_URL ?? import.meta.env.VITE_CLIENTS_URL ?? "";
-const ANIMALS_BASE = runtime?.ANIMALS_URL ?? import.meta.env.VITE_ANIMALS_URL ?? "";
-const CONSULTATIONS_BASE = runtime?.CONSULTATIONS_URL ?? import.meta.env.VITE_CONSULTATIONS_URL ?? "";
-const VACCINATION_BASE = runtime?.VACCINATION_URL ?? import.meta.env.VITE_VACCINATION_URL ?? "";
-const INVENTORY_BASE = runtime?.INVENTORY_URL ?? import.meta.env.VITE_INVENTORY_URL ?? "";
+function serviceBase(
+  runtimeKey: keyof NonNullable<Window["__VET_PLUS_ENV__"]>,
+  viteKey: string,
+): string {
+  const runtime = typeof window !== "undefined" ? window.__VET_PLUS_ENV__ : undefined;
+  return runtime?.[runtimeKey] ?? (import.meta.env[viteKey] as string | undefined) ?? "";
+}
 
 function apiUrl(base: string, path: string): string {
   if (!base) return path;
@@ -88,35 +87,35 @@ async function request<T>(
 export const api = {
   login: (email: string, password: string) =>
     request<{ access_token: string; user_id: number; email: string; role: string; full_name: string }>(
-      apiUrl(AUTH_BASE, "/api/login/"),
+      apiUrl(serviceBase("AUTH_URL", "VITE_AUTH_URL"), "/api/login/"),
       { method: "POST", body: JSON.stringify({ email, password }) },
       false,
     ),
 
   register: (data: { email: string; password: string; full_name: string; role: string }) =>
-    request(apiUrl(AUTH_BASE, "/api/register/"), { method: "POST", body: JSON.stringify(data) }, false),
+    request(apiUrl(serviceBase("AUTH_URL", "VITE_AUTH_URL"), "/api/register/"), { method: "POST", body: JSON.stringify(data) }, false),
 
-  getClients: () => request<Client[]>(apiUrl(CLIENTS_BASE, "/api/clientes/")),
+  getClients: () => request<Client[]>(apiUrl(serviceBase("CLIENTS_URL", "VITE_CLIENTS_URL"), "/api/clientes/")),
   createClient: (data: { nome_completo: string; email: string; telefone: string; cpf: string; endereco: string }) =>
-    request<Client>(apiUrl(CLIENTS_BASE, "/api/clientes/"), { method: "POST", body: JSON.stringify(data) }),
+    request<Client>(apiUrl(serviceBase("CLIENTS_URL", "VITE_CLIENTS_URL"), "/api/clientes/"), { method: "POST", body: JSON.stringify(data) }),
 
-  getAnimals: () => request<Animal[]>(apiUrl(ANIMALS_BASE, "/api/animais/")),
+  getAnimals: () => request<Animal[]>(apiUrl(serviceBase("ANIMALS_URL", "VITE_ANIMALS_URL"), "/api/animais/")),
   createAnimal: (data: { name: string; species: string; breed: string; birth_date?: string; weight?: number; client_id: number }) =>
-    request<Animal>(apiUrl(ANIMALS_BASE, "/api/animais/"), { method: "POST", body: JSON.stringify(data) }),
+    request<Animal>(apiUrl(serviceBase("ANIMALS_URL", "VITE_ANIMALS_URL"), "/api/animais/"), { method: "POST", body: JSON.stringify(data) }),
   getAnimalHistory: (id: number) =>
-    request<MedicalHistoryEntry[]>(apiUrl(ANIMALS_BASE, `/api/animais/${id}/historico/`)),
+    request<MedicalHistoryEntry[]>(apiUrl(serviceBase("ANIMALS_URL", "VITE_ANIMALS_URL"), `/api/animais/${id}/historico/`)),
 
-  getConsultations: () => request<Consultation[]>(apiUrl(CONSULTATIONS_BASE, "/api/consultas/")),
+  getConsultations: () => request<Consultation[]>(apiUrl(serviceBase("CONSULTATIONS_URL", "VITE_CONSULTATIONS_URL"), "/api/consultas/")),
   createConsultation: (data: { animal_id: number; veterinarian_id: number; scheduled_at: string; type: string; notes?: string }) =>
-    request<Consultation>(apiUrl(CONSULTATIONS_BASE, "/api/consultas/"), { method: "POST", body: JSON.stringify(data) }),
+    request<Consultation>(apiUrl(serviceBase("CONSULTATIONS_URL", "VITE_CONSULTATIONS_URL"), "/api/consultas/"), { method: "POST", body: JSON.stringify(data) }),
   completeConsultation: (id: number, data: { diagnosis: string; prescription_notes?: string; procedure?: string }) =>
-    request<Consultation>(apiUrl(CONSULTATIONS_BASE, `/api/consultas/${id}/concluir/`), { method: "PATCH", body: JSON.stringify(data) }),
+    request<Consultation>(apiUrl(serviceBase("CONSULTATIONS_URL", "VITE_CONSULTATIONS_URL"), `/api/consultas/${id}/concluir/`), { method: "PATCH", body: JSON.stringify(data) }),
 
-  getVeterinarians: () => request<Veterinarian[]>(apiUrl(CONSULTATIONS_BASE, "/api/veterinarios/")),
+  getVeterinarians: () => request<Veterinarian[]>(apiUrl(serviceBase("CONSULTATIONS_URL", "VITE_CONSULTATIONS_URL"), "/api/veterinarios/")),
   createVeterinarian: (data: { user_id: number; full_name: string; crmv: string; specialty: string }) =>
-    request<Veterinarian>(apiUrl(CONSULTATIONS_BASE, "/api/veterinarios/"), { method: "POST", body: JSON.stringify(data) }),
+    request<Veterinarian>(apiUrl(serviceBase("CONSULTATIONS_URL", "VITE_CONSULTATIONS_URL"), "/api/veterinarios/"), { method: "POST", body: JSON.stringify(data) }),
 
-  getVaccines: () => request<Vaccine[]>(apiUrl(VACCINATION_BASE, "/api/vacinas/")),
+  getVaccines: () => request<Vaccine[]>(apiUrl(serviceBase("VACCINATION_URL", "VITE_VACCINATION_URL"), "/api/vacinas/")),
   createVaccine: (data: {
     animal_id: number;
     vaccine_name: string;
@@ -125,10 +124,10 @@ export const api = {
     veterinarian_id: number;
     batch_number?: string;
     notes?: string;
-  }) => request<Vaccine>(apiUrl(VACCINATION_BASE, "/api/vacinas/"), { method: "POST", body: JSON.stringify(data) }),
-  getUpcomingVaccines: () => request<UpcomingVaccine[]>(apiUrl(VACCINATION_BASE, "/api/vacinas/proximas/")),
+  }) => request<Vaccine>(apiUrl(serviceBase("VACCINATION_URL", "VITE_VACCINATION_URL"), "/api/vacinas/"), { method: "POST", body: JSON.stringify(data) }),
+  getUpcomingVaccines: () => request<UpcomingVaccine[]>(apiUrl(serviceBase("VACCINATION_URL", "VITE_VACCINATION_URL"), "/api/vacinas/proximas/")),
 
-  getMedicines: () => request<Medicine[]>(apiUrl(INVENTORY_BASE, "/api/medicamentos/")),
+  getMedicines: () => request<Medicine[]>(apiUrl(serviceBase("INVENTORY_URL", "VITE_INVENTORY_URL"), "/api/medicamentos/")),
   createMedicine: (data: {
     name: string;
     generic_name?: string;
@@ -140,16 +139,16 @@ export const api = {
     expiration_date?: string;
     supplier?: string;
     unit_price?: number;
-  }) => request<Medicine>(apiUrl(INVENTORY_BASE, "/api/medicamentos/"), { method: "POST", body: JSON.stringify(data) }),
+  }) => request<Medicine>(apiUrl(serviceBase("INVENTORY_URL", "VITE_INVENTORY_URL"), "/api/medicamentos/"), { method: "POST", body: JSON.stringify(data) }),
   stockEntry: (id: number, data: { quantity: number; reason: string }) =>
-    request<StockMovement>(apiUrl(INVENTORY_BASE, `/api/medicamentos/${id}/entrada/`), { method: "POST", body: JSON.stringify(data) }),
+    request<StockMovement>(apiUrl(serviceBase("INVENTORY_URL", "VITE_INVENTORY_URL"), `/api/medicamentos/${id}/entrada/`), { method: "POST", body: JSON.stringify(data) }),
   stockExit: (id: number, data: { quantity: number; reason: string }) =>
-    request<StockMovement>(apiUrl(INVENTORY_BASE, `/api/medicamentos/${id}/saida/`), { method: "POST", body: JSON.stringify(data) }),
-  getLowStock: () => request<Medicine[]>(apiUrl(INVENTORY_BASE, "/api/medicamentos/baixo-estoque/")),
+    request<StockMovement>(apiUrl(serviceBase("INVENTORY_URL", "VITE_INVENTORY_URL"), `/api/medicamentos/${id}/saida/`), { method: "POST", body: JSON.stringify(data) }),
+  getLowStock: () => request<Medicine[]>(apiUrl(serviceBase("INVENTORY_URL", "VITE_INVENTORY_URL"), "/api/medicamentos/baixo-estoque/")),
   getMovements: (medicineId?: number) => {
     const path = medicineId
       ? `/api/medicamentos/movimentacoes/?medicine_id=${medicineId}`
       : "/api/medicamentos/movimentacoes/";
-    return request<StockMovement[]>(apiUrl(INVENTORY_BASE, path));
+    return request<StockMovement[]>(apiUrl(serviceBase("INVENTORY_URL", "VITE_INVENTORY_URL"), path));
   },
 };
