@@ -13,12 +13,26 @@ import type {
 const TOKEN_KEY = "vetplus_token";
 const USER_KEY = "vetplus_user";
 
+const RENDER_DEFAULTS: Record<string, string> = {
+  AUTH_URL: "https://vet-plus-auth.onrender.com",
+  CLIENTS_URL: "https://vet-plus-clients.onrender.com",
+  ANIMALS_URL: "https://vet-plus-animals.onrender.com",
+  CONSULTATIONS_URL: "https://vet-plus-consultations.onrender.com",
+  VACCINATION_URL: "https://vet-plus-vaccination.onrender.com",
+  INVENTORY_URL: "https://vet-plus-inventory.onrender.com",
+};
+
 function serviceBase(
   runtimeKey: keyof NonNullable<Window["__VET_PLUS_ENV__"]>,
   viteKey: string,
 ): string {
   const runtime = typeof window !== "undefined" ? window.__VET_PLUS_ENV__ : undefined;
-  return runtime?.[runtimeKey] ?? (import.meta.env[viteKey] as string | undefined) ?? "";
+  return (
+    runtime?.[runtimeKey] ??
+    (import.meta.env[viteKey] as string | undefined) ??
+    RENDER_DEFAULTS[runtimeKey] ??
+    ""
+  );
 }
 
 function apiUrl(base: string, path: string): string {
