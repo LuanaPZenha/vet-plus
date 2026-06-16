@@ -14,9 +14,7 @@ start_service() {
   cd "/app/services/$dir"
   export PYTHONPATH="/app/services/$dir:/app"
   python manage.py migrate --noinput
-  if [ "$dir" = "consultations" ]; then
-    python manage.py ensure_demo_veterinarian
-  fi
+  python manage.py ensure_demo_data
   gunicorn config.wsgi:application \
     --bind "127.0.0.1:${port}" \
     --workers 1 \
