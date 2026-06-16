@@ -1,68 +1,52 @@
-# Deploy no Render — Opção A (Auth Service)
+# Deploy no Render — stack completa Vet Plus+
 
-Guia para publicar a **API de autenticação** do Vet Plus+ no Render.
+## URL principal
 
-> O sistema completo (6 APIs + frontend) roda localmente com `docker compose up`.
+**https://vet-plus.onrender.com** abre o **dashboard React** (login, clientes, animais, etc.).
+
+As APIs ficam em serviços separados; o nginx do frontend faz proxy de `/api/*` para cada microsserviço (igual ao `docker compose` local).
+
+| Serviço | URL |
+|---------|-----|
+| **App (frontend)** | https://vet-plus.onrender.com |
+| Auth | https://vet-plus-auth.onrender.com |
+| Clientes | https://vet-plus-clients.onrender.com |
+| Animais | https://vet-plus-animals.onrender.com |
+| Consultas | https://vet-plus-consultations.onrender.com |
+| Vacinação | https://vet-plus-vaccination.onrender.com |
+| Estoque | https://vet-plus-inventory.onrender.com |
 
 ---
 
-## Dockerfile na raiz
+## Migrar do deploy atual (só auth em vet-plus)
 
-O repositório inclui `./Dockerfile` na raiz para deploy no Render (microsserviço **auth**).
+Se hoje `vet-plus` roda a API de auth:
 
-| Campo no Render | Valor |
-|-----------------|--------|
-| Root Directory | *(vazio)* |
-| Dockerfile Path | `Dockerfile` *(padrão)* |
-| Runtime | Docker |
+1. Faça **push** deste código para `main`
+2. No Render, crie um **novo Web Service** `vet-plus-auth`:
+   - Dockerfile: `Dockerfile.auth`
+   - Mesmo Postgres (`vet-auth-db`) → copie `DATABASE_URL` e `SECRET_KEY` do serviço antigo
+3. Crie os outros 5 microsserviços + bancos (ou use **Blueprint** abaixo)
+4. No serviço **vet-plus**, altere o Dockerfile para `./Dockerfile` (frontend) e adicione as env vars de proxy (`AUTH_URL`, `AUTH_HOST`, etc.) — o blueprint faz isso automaticamente
+5. **Redeploy** todos os serviços
 
 ---
 
 ## Blueprint (recomendado)
 
-1. **New +** → **Blueprint**
-2. Repositório `LuanaPZenha/vet-plus`
-3. **Apply** (usa `render.yaml`)
-
----
-
-## Configuração manual
-
-1. **New +** → **Web Service** → conecte o repo
-2. **Runtime:** Docker
-3. Crie **PostgreSQL** no Render
-4. **Environment Variables:**
-
-| Key | Value |
-|-----|--------|
-| `DATABASE_URL` | Internal Database URL do Postgres |
-| `SECRET_KEY` | chave longa aleatória |
-| `DEBUG` | `False` |
-| `ALLOWED_HOSTS` | `.onrender.com,localhost,127.0.0.1` |
-
-5. **Health Check Path:** `/api/docs/`
-6. **Deploy**
+1. Push para `main`
+2. Render → **New +** → **Blueprint** → repo `LuanaPZenha/vet-plus` → **Apply**
 
 ---
 
 ## Testar
 
-```
-https://SEU-SERVICO.onrender.com/api/docs/
-```
-
-```bash
-curl -X POST https://SEU-SERVICO.onrender.com/api/register/ \
-  -H "Content-Type: application/json" \
-  -d "{\"email\":\"admin@vet.com\",\"password\":\"senha1234\",\"full_name\":\"Admin\",\"role\":\"admin\"}"
-```
+1. Abra https://vet-plus.onrender.com
+2. Registre um usuário ou use credenciais criadas via `/api/register/` na auth
+3. Navegue pelo dashboard
 
 ---
 
-## Erros comuns
+## Plano free
 
-| Erro | Solução |
-|------|---------|
-| `open Dockerfile: no such file or directory` | Confirme push com `Dockerfile` na raiz |
-| `DisallowedHost` | `ALLOWED_HOSTS=.onrender.com,...` |
-| App não responde | Render usa `$PORT` — já configurado no Dockerfile |
+Cada serviço hiberna após ~15 min sem uso. A primeira requisição pode demorar ~50s. São 7 web services + 6 bancos.

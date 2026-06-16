@@ -1,0 +1,62 @@
+server {
+    listen ${PORT};
+    server_name _;
+    root /usr/share/nginx/html;
+    index index.html;
+
+    gzip on;
+    gzip_types text/plain text/css application/json application/javascript text/xml;
+
+    location /api/login {
+        proxy_pass ${AUTH_URL}/api/login;
+        proxy_ssl_server_name on;
+        proxy_set_header Host ${AUTH_HOST};
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+    location /api/register {
+        proxy_pass ${AUTH_URL}/api/register;
+        proxy_ssl_server_name on;
+        proxy_set_header Host ${AUTH_HOST};
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+    location /api/clientes {
+        proxy_pass ${CLIENTS_URL}/api/clientes;
+        proxy_ssl_server_name on;
+        proxy_set_header Host ${CLIENTS_HOST};
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+    location /api/animais {
+        proxy_pass ${ANIMALS_URL}/api/animais;
+        proxy_ssl_server_name on;
+        proxy_set_header Host ${ANIMALS_HOST};
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+    location /api/consultas {
+        proxy_pass ${CONSULTATIONS_URL}/api/consultas;
+        proxy_ssl_server_name on;
+        proxy_set_header Host ${CONSULTATIONS_HOST};
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+    location /api/veterinarios {
+        proxy_pass ${CONSULTATIONS_URL}/api/veterinarios;
+        proxy_ssl_server_name on;
+        proxy_set_header Host ${CONSULTATIONS_HOST};
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+    location /api/vacinas {
+        proxy_pass ${VACCINATION_URL}/api/vacinas;
+        proxy_ssl_server_name on;
+        proxy_set_header Host ${VACCINATION_HOST};
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+    location /api/medicamentos {
+        proxy_pass ${INVENTORY_URL}/api/medicamentos;
+        proxy_ssl_server_name on;
+        proxy_set_header Host ${INVENTORY_HOST};
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}

@@ -29,11 +29,39 @@ def get_database_config(base_dir: Path) -> dict:
 
 
 def get_allowed_hosts() -> list[str]:
-    """Hosts permitidos: env ALLOWED_HOSTS + defaults para deploy em cloud."""
-    defaults = ["localhost", "127.0.0.1", ".onrender.com", ".railway.app"]
+    """Hosts permitidos: env ALLOWED_HOSTS + hostname do Render + defaults."""
+    defaults = [
+        "localhost",
+        "127.0.0.1",
+        ".onrender.com",
+        ".railway.app",
+        "vet-plus.onrender.com",
+    ]
+    render_hostname = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
+    if render_hostname:
+        defaults.append(render_hostname)
+    render_url = os.environ.get("RENDER_EXTERNAL_URL", "")
+    if render_url.startswith("https://"):
+        defaults.append(render_url.removeprefix("https://").split("/")[0])
     env_value = os.environ.get("ALLOWED_HOSTS", "")
     from_env = [h.strip() for h in env_value.split(",") if h.strip()]
     return list(dict.fromkeys(from_env + defaults))
+
+
+def get_csrf_trusted_origins() -> list[str]:
+    """Origens confiáveis para CSRF (Render + frontend local)."""
+    origins = [
+        "https://vet-plus.onrender.com",
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+    ]
+    for key in ("RENDER_EXTERNAL_URL", "FRONTEND_URL"):
+        value = os.environ.get(key, "").rstrip("/")
+        if value:
+            origins.append(value)
+    extra = os.environ.get("CSRF_TRUSTED_ORIGINS", "")
+    origins.extend(item.strip() for item in extra.split(",") if item.strip())
+    return list(dict.fromkeys(origins))
 
 
 def get_common_settings(base_dir: Path, service_name: str) -> dict:
@@ -45,11 +73,7 @@ def get_common_settings(base_dir: Path, service_name: str) -> dict:
         "SECRET_KEY": secret_key,
         "DEBUG": debug,
         "ALLOWED_HOSTS": allowed_hosts,
-        "CSRF_TRUSTED_ORIGINS": [
-            "https://*.onrender.com",
-            "http://localhost:3000",
-            "http://127.0.0.1:3000",
-        ],
+        "CSRF_TRUSTED_ORIGINS": get_csrf_trusted_origins(),
         "INSTALLED_APPS": [
             "django.contrib.admin",
             "django.contrib.auth",
@@ -61,6 +85,7 @@ def get_common_settings(base_dir: Path, service_name: str) -> dict:
             "drf_spectacular",
         ],
         "MIDDLEWARE": [
+            "shared.cors_middleware.CorsMiddleware",
             "django.middleware.security.SecurityMiddleware",
             "django.contrib.sessions.middleware.SessionMiddleware",
             "django.middleware.common.CommonMiddleware",

@@ -16,7 +16,9 @@ COPY shared /app/shared
 COPY services/vaccination /app
 
 ENV PYTHONPATH=/app:/app/shared
+ENV ALLOWED_HOSTS=.onrender.com,localhost,127.0.0.1
+ENV DEBUG=False
 
 EXPOSE 8000
 
-CMD ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
+CMD ["sh", "-c", "python manage.py migrate && gunicorn config.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers 2"]

@@ -1,27 +1,24 @@
-# Deploy Render — microsserviço de autenticação (Vet Plus+)
-# Build context: raiz do repositório
+# Deploy Render — frontend Vet Plus+ (nginx + proxy para microsserviços)
+# URL principal: https://vet-plus.onrender.com
 
-FROM python:3.13-slim
-
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+FROM node:20-alpine AS build
 
 WORKDIR /app
+COPY frontend/package.json frontend/package-lock.json ./
+RUN npm ci
+COPY frontend .
+RUN npm run build
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    libpq-dev gcc \
-    && rm -rf /var/lib/apt/lists/*
+FROM nginx:1.27-alpine
 
-COPY services/auth/requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN apk add --no-cache gettext
 
-COPY shared /app/shared
-COPY services/auth /app
+COPY frontend/nginx.render.conf.template /etc/nginx/templates/default.conf.template
+COPY frontend/docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
 
-ENV PYTHONPATH=/app:/app/shared
-ENV ALLOWED_HOSTS=.onrender.com,localhost,127.0.0.1,auth-service
-ENV DEBUG=False
+COPY --from=build /app/dist /usr/share/nginx/html
 
-EXPOSE 8000
+EXPOSE 10000
 
-CMD ["sh", "-c", "python manage.py migrate && gunicorn config.wsgi:application --bind 0.0.0.0:${PORT:-8000} --workers 2"]
+ENTRYPOINT ["/docker-entrypoint.sh"]

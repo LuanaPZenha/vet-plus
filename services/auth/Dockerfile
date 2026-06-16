@@ -16,7 +16,7 @@ COPY shared /app/shared
 COPY services/auth /app
 
 ENV PYTHONPATH=/app:/app/shared
-ENV ALLOWED_HOSTS=.onrender.com,localhost,127.0.0.1,auth-service
+ENV ALLOWED_HOSTS=.onrender.com,localhost,127.0.0.1,vet-plus.onrender.com,auth-service
 ENV DEBUG=False
 
 EXPOSE 8000
