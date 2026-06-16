@@ -27,6 +27,10 @@ class IVeterinarianRepository(ABC):
         """Busca veterinário pelo ID do usuário autenticado."""
 
     @abstractmethod
+    def crmv_exists(self, crmv: str) -> bool:
+        """Verifica se o CRMV já está cadastrado."""
+
+    @abstractmethod
     def list_all(self) -> list[Veterinarian]:
         """Lista todos os veterinários."""
 

@@ -221,8 +221,11 @@ class CreateVeterinarianUseCase:
         existing = self._veterinarian_repository.find_by_user_id(dto.user_id)
         if existing is not None:
             raise VeterinarianCreationError(
-                f"Já existe veterinário para o usuário {dto.user_id}."
+                "Já existe veterinário cadastrado para este usuário."
             )
+
+        if self._veterinarian_repository.crmv_exists(dto.crmv):
+            raise VeterinarianCreationError(f"CRMV {dto.crmv} já cadastrado.")
 
         veterinarian = Veterinarian(
             id=None,

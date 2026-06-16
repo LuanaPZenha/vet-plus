@@ -46,14 +46,9 @@ export function VeterinariansPage() {
     e.preventDefault();
     setSaving(true);
     try {
-      const auth = await api.register({
+      await api.createVeterinarianAccount({
         email: form.email,
         password: form.password,
-        full_name: form.full_name,
-        role: "veterinarian",
-      });
-      await api.createVeterinarian({
-        user_id: auth.user_id,
         full_name: form.full_name,
         crmv: form.crmv,
         specialty: form.specialty,
@@ -63,7 +58,13 @@ export function VeterinariansPage() {
       setForm({ full_name: "", email: "", password: "", crmv: "", specialty: "" });
       load();
     } catch (err) {
-      toast(err instanceof ApiError ? err.message : "Erro ao cadastrar veterinário", "error");
+      const message = err instanceof ApiError ? err.message : "Erro ao cadastrar veterinário";
+      if (message.includes("Já existe veterinário")) {
+        toast("Este usuário já possui perfil de veterinário. Confira a lista abaixo.", "error");
+        load();
+        return;
+      }
+      toast(message, "error");
     } finally {
       setSaving(false);
     }

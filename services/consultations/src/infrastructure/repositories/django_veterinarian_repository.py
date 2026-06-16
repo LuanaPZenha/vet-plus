@@ -43,6 +43,9 @@ class DjangoVeterinarianRepository(IVeterinarianRepository):
         except VeterinarianModel.DoesNotExist:
             return None
 
+    def crmv_exists(self, crmv: str) -> bool:
+        return VeterinarianModel.objects.filter(crmv=crmv.strip()).exists()
+
     def list_all(self) -> list[Veterinarian]:
         return [self._to_entity(model) for model in VeterinarianModel.objects.all()]
 

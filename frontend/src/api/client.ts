@@ -128,6 +128,46 @@ async function request<T>(
   return data as T;
 }
 
+async function resolveAuthUserId(
+  email: string,
+  password: string,
+  full_name: string,
+  role: string,
+): Promise<number> {
+  const normalizedEmail = email.trim().toLowerCase();
+  try {
+    const auth = await request<{ user_id: number }>(
+      apiUrl(authServiceBase(), "/api/register/"),
+      {
+        method: "POST",
+        body: JSON.stringify({ email: normalizedEmail, password, full_name, role }),
+      },
+      false,
+    );
+    return auth.user_id;
+  } catch (err) {
+    if (err instanceof ApiError && err.message.includes("E-mail já cadastrado")) {
+      try {
+        const login = await request<{ user_id: number }>(
+          apiUrl(authServiceBase(), "/api/login/"),
+          {
+            method: "POST",
+            body: JSON.stringify({ email: normalizedEmail, password }),
+          },
+          false,
+        );
+        return login.user_id;
+      } catch {
+        throw new ApiError(
+          "Este e-mail já está em uso. Use a senha correta desse usuário ou informe outro e-mail.",
+          400,
+        );
+      }
+    }
+    throw err;
+  }
+}
+
 export const api = {
   login: (email: string, password: string) =>
     request<{ access_token: string; user_id: number; email: string; role: string; full_name: string }>(
@@ -162,6 +202,28 @@ export const api = {
   getVeterinarians: () => request<Veterinarian[]>(apiUrl(serviceBase("CONSULTATIONS_URL", "VITE_CONSULTATIONS_URL"), "/api/veterinarios/")),
   createVeterinarian: (data: { user_id: number; full_name: string; crmv: string; specialty: string }) =>
     request<Veterinarian>(apiUrl(serviceBase("CONSULTATIONS_URL", "VITE_CONSULTATIONS_URL"), "/api/veterinarios/"), { method: "POST", body: JSON.stringify(data) }),
+
+  createVeterinarianAccount: async (data: {
+    email: string;
+    password: string;
+    full_name: string;
+    crmv: string;
+    specialty: string;
+  }) => {
+    const user_id = await resolveAuthUserId(data.email, data.password, data.full_name, "veterinarian");
+    return request<Veterinarian>(
+      apiUrl(serviceBase("CONSULTATIONS_URL", "VITE_CONSULTATIONS_URL"), "/api/veterinarios/"),
+      {
+        method: "POST",
+        body: JSON.stringify({
+          user_id,
+          full_name: data.full_name.trim(),
+          crmv: data.crmv.trim(),
+          specialty: data.specialty.trim(),
+        }),
+      },
+    );
+  },
 
   getVaccines: () => request<Vaccine[]>(apiUrl(serviceBase("VACCINATION_URL", "VITE_VACCINATION_URL"), "/api/vacinas/")),
   createVaccine: (data: {
