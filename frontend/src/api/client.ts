@@ -13,12 +13,14 @@ import type {
 const TOKEN_KEY = "vetplus_token";
 const USER_KEY = "vetplus_user";
 
-const AUTH_BASE = import.meta.env.VITE_AUTH_URL ?? "";
-const CLIENTS_BASE = import.meta.env.VITE_CLIENTS_URL ?? "";
-const ANIMALS_BASE = import.meta.env.VITE_ANIMALS_URL ?? "";
-const CONSULTATIONS_BASE = import.meta.env.VITE_CONSULTATIONS_URL ?? "";
-const VACCINATION_BASE = import.meta.env.VITE_VACCINATION_URL ?? "";
-const INVENTORY_BASE = import.meta.env.VITE_INVENTORY_URL ?? "";
+const runtime = typeof window !== "undefined" ? window.__VET_PLUS_ENV__ : undefined;
+
+const AUTH_BASE = runtime?.AUTH_URL ?? import.meta.env.VITE_AUTH_URL ?? "";
+const CLIENTS_BASE = runtime?.CLIENTS_URL ?? import.meta.env.VITE_CLIENTS_URL ?? "";
+const ANIMALS_BASE = runtime?.ANIMALS_URL ?? import.meta.env.VITE_ANIMALS_URL ?? "";
+const CONSULTATIONS_BASE = runtime?.CONSULTATIONS_URL ?? import.meta.env.VITE_CONSULTATIONS_URL ?? "";
+const VACCINATION_BASE = runtime?.VACCINATION_URL ?? import.meta.env.VITE_VACCINATION_URL ?? "";
+const INVENTORY_BASE = runtime?.INVENTORY_URL ?? import.meta.env.VITE_INVENTORY_URL ?? "";
 
 function apiUrl(base: string, path: string): string {
   if (!base) return path;

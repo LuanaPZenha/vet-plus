@@ -1,4 +1,4 @@
-# Deploy Render — frontend Vet Plus+ (nginx + proxy para microsserviços)
+# Deploy Render — frontend Vet Plus+ (React + nginx)
 # URL principal: https://vet-plus.onrender.com
 
 FROM node:20-alpine AS build
