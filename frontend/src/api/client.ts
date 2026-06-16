@@ -137,7 +137,11 @@ export const api = {
     ),
 
   register: (data: { email: string; password: string; full_name: string; role: string }) =>
-    request(apiUrl(authServiceBase(), "/api/register/"), { method: "POST", body: JSON.stringify(data) }, false),
+    request<{ user_id: number; email: string; role: string; full_name: string }>(
+      apiUrl(authServiceBase(), "/api/register/"),
+      { method: "POST", body: JSON.stringify(data) },
+      false,
+    ),
 
   getClients: () => request<Client[]>(apiUrl(serviceBase("CLIENTS_URL", "VITE_CLIENTS_URL"), "/api/clientes/")),
   createClient: (data: { nome_completo: string; email: string; telefone: string; cpf: string; endereco: string }) =>

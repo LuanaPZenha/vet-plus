@@ -7,6 +7,7 @@ import { DashboardPage } from "./pages/Dashboard";
 import { ClientsPage } from "./pages/Clients";
 import { AnimalsPage } from "./pages/Animals";
 import { ConsultationsPage } from "./pages/Consultations";
+import { VeterinariansPage } from "./pages/Veterinarians";
 import { VaccinesPage } from "./pages/Vaccines";
 import { InventoryPage } from "./pages/Inventory";
 
@@ -21,6 +22,7 @@ export default function App() {
               <Route path="/" element={<DashboardPage />} />
               <Route path="/clientes" element={<ClientsPage />} />
               <Route path="/animais" element={<AnimalsPage />} />
+              <Route path="/veterinarios" element={<VeterinariansPage />} />
               <Route path="/consultas" element={<ConsultationsPage />} />
               <Route path="/vacinas" element={<VaccinesPage />} />
               <Route path="/estoque" element={<InventoryPage />} />
