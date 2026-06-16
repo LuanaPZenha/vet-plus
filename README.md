@@ -140,7 +140,7 @@ sequenceDiagram
 | **Auth** | 8001 | auth_db | POST /api/login, POST /api/register |
 | **Clients** | 8002 | clients_db | GET/POST /api/clientes |
 | **Animals** | 8003 | animals_db | GET/POST /api/animais |
-| **Consultations** | 8004 | consultations_db | GET/POST /api/consultas |
+| **Consultations** | 8004 | consultations_db | GET/POST /api/consultas, GET/POST /api/veterinarios |
 | **Vaccination** | 8005 | vaccination_db | GET/POST /api/vacinas |
 
 ### Frontend Dashboard

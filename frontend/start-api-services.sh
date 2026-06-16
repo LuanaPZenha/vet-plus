@@ -6,6 +6,7 @@ export DEBUG="${DEBUG:-False}"
 export ALLOWED_HOSTS="${ALLOWED_HOSTS:-.onrender.com,localhost,127.0.0.1}"
 export ANIMALS_SERVICE_URL="${ANIMALS_SERVICE_URL:-http://127.0.0.1:8003}"
 export AUTH_VERIFY_URL="${AUTH_VERIFY_URL:-}"
+export DEMO_VET_USER_ID="${DEMO_VET_USER_ID:-1}"
 
 start_service() {
   port="$1"
@@ -13,6 +14,9 @@ start_service() {
   cd "/app/services/$dir"
   export PYTHONPATH="/app/services/$dir:/app"
   python manage.py migrate --noinput
+  if [ "$dir" = "consultations" ]; then
+    python manage.py ensure_demo_veterinarian
+  fi
   gunicorn config.wsgi:application \
     --bind "127.0.0.1:${port}" \
     --workers 1 \

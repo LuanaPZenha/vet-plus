@@ -137,6 +137,7 @@ services:
       DEBUG: ${DEBUG:-False}
       ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1,clients-service}
       AUTH_SERVICE_URL: http://auth-service:8000
+      AUTH_VERIFY_URL: http://auth-service:8000/api/verify-token/
     depends_on:
       clients-db:
         condition: service_healthy
@@ -159,6 +160,7 @@ services:
       DEBUG: ${DEBUG:-False}
       ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1,animals-service}
       AUTH_SERVICE_URL: http://auth-service:8000
+      AUTH_VERIFY_URL: http://auth-service:8000/api/verify-token/
       CLIENTS_SERVICE_URL: http://clients-service:8000
     depends_on:
       animals-db:
@@ -182,7 +184,9 @@ services:
       DEBUG: ${DEBUG:-False}
       ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1,consultations-service}
       AUTH_SERVICE_URL: http://auth-service:8000
+      AUTH_VERIFY_URL: http://auth-service:8000/api/verify-token/
       ANIMALS_SERVICE_URL: http://animals-service:8000
+      DEMO_VET_USER_ID: "1"
     depends_on:
       consultations-db:
         condition: service_healthy
@@ -207,6 +211,7 @@ services:
       DEBUG: ${DEBUG:-False}
       ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1,vaccination-service}
       AUTH_SERVICE_URL: http://auth-service:8000
+      AUTH_VERIFY_URL: http://auth-service:8000/api/verify-token/
       ANIMALS_SERVICE_URL: http://animals-service:8000
     depends_on:
       vaccination-db:
@@ -232,6 +237,7 @@ services:
       DEBUG: ${DEBUG:-False}
       ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1,inventory-service}
       AUTH_SERVICE_URL: http://auth-service:8000
+      AUTH_VERIFY_URL: http://auth-service:8000/api/verify-token/
     depends_on:
       inventory-db:
         condition: service_healthy
