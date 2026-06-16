@@ -20,7 +20,7 @@ INSTALLED_APPS = _settings["INSTALLED_APPS"] + ["src.presentation.api"]
 REST_FRAMEWORK = {
     **_settings["REST_FRAMEWORK"],
     "DEFAULT_AUTHENTICATION_CLASSES": [
-        "src.presentation.api.authentication.jwt_auth.JWTAuthentication",
+        "jwt_auth.JWTAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",

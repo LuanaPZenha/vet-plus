@@ -14,7 +14,7 @@ from src.application.use_cases.client_use_cases import (
     ListClientsUseCase,
 )
 from src.infrastructure.repositories.django_client_repository import DjangoClientRepository
-from src.presentation.api.authentication.jwt_auth import IsAnyAuthenticatedRole, IsStaffRole
+from jwt_auth import IsAnyAuthenticatedRole, IsStaffRole
 from src.presentation.api.serializers.client_serializers import (
     ClientResponseSerializer,
     CreateClientSerializer,

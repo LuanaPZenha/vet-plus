@@ -5,6 +5,7 @@ export SECRET_KEY="${SECRET_KEY:-dev-insecure-key}"
 export DEBUG="${DEBUG:-False}"
 export ALLOWED_HOSTS="${ALLOWED_HOSTS:-.onrender.com,localhost,127.0.0.1}"
 export ANIMALS_SERVICE_URL="${ANIMALS_SERVICE_URL:-http://127.0.0.1:8003}"
+export AUTH_VERIFY_URL="${AUTH_VERIFY_URL:-}"
 
 start_service() {
   port="$1"

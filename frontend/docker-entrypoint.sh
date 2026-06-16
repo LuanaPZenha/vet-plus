@@ -5,6 +5,7 @@ export PORT="${PORT:-10000}"
 export AUTH_URL="${AUTH_URL:-https://vet-plus-auth.onrender.com}"
 export AUTH_HOST="${AUTH_HOST:-vet-plus-auth.onrender.com}"
 export AUTH_URL="${AUTH_URL%/}"
+export AUTH_VERIFY_URL="${AUTH_VERIFY_URL:-${AUTH_URL}/api/verify-token/}"
 
 . /start-api-services.sh
 

@@ -18,6 +18,10 @@ class LoginSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True)
 
 
+class VerifyTokenSerializer(serializers.Serializer):
+    token = serializers.CharField()
+
+
 class AuthResponseSerializer(serializers.Serializer):
     access_token = serializers.CharField()
     token_type = serializers.CharField()

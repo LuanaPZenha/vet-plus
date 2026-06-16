@@ -1,5 +1,6 @@
 """Views REST - Autenticação."""
 
+import jwt
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.response import Response
@@ -18,6 +19,7 @@ from src.presentation.api.serializers.auth_serializers import (
     AuthResponseSerializer,
     LoginSerializer,
     RegisterSerializer,
+    VerifyTokenSerializer,
 )
 
 
@@ -68,3 +70,34 @@ class LoginView(APIView):
             return Response({"error": str(exc)}, status=status.HTTP_401_UNAUTHORIZED)
 
         return Response(AuthResponseSerializer(result.__dict__).data)
+
+
+class VerifyTokenView(APIView):
+    """POST /api/verify-token/ - Valida JWT para os demais microsserviços."""
+
+    authentication_classes = []
+    permission_classes = []
+
+    @extend_schema(
+        request=VerifyTokenSerializer,
+        tags=["Auth"],
+    )
+    def post(self, request):
+        serializer = VerifyTokenSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        token = serializer.validated_data["token"]
+        service = TokenService()
+
+        try:
+            payload = service.decode_token(token)
+        except jwt.InvalidTokenError:
+            return Response({"error": "Token inválido."}, status=status.HTTP_401_UNAUTHORIZED)
+
+        return Response(
+            {
+                "user_id": payload["user_id"],
+                "email": payload["email"],
+                "role": payload["role"],
+            }
+        )

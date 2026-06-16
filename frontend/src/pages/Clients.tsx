@@ -22,7 +22,7 @@ export function ClientsPage() {
     setLoading(true);
     api.getClients()
       .then(setClients)
-      .catch(() => toast("Erro ao carregar tutores", "error"))
+      .catch((err) => toast(err instanceof ApiError ? err.message : "Erro ao carregar tutores", "error"))
       .finally(() => setLoading(false));
   };
 
