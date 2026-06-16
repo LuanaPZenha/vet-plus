@@ -20,7 +20,8 @@ def get_database_config(base_dir: Path, db_schema: str | None = None) -> dict:
         )
         if db_schema:
             config.setdefault("OPTIONS", {})
-            config["OPTIONS"]["options"] = f"-c search_path={db_schema},public"
+            # Schema exclusivo — evita conflito de django_migrations entre microsserviços.
+            config["OPTIONS"]["options"] = f"-c search_path={db_schema}"
         return {"default": config}
     return {
         "default": {
