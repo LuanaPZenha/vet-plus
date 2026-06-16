@@ -37,14 +37,20 @@ Se hoje `vet-plus` roda a API de auth:
 ## Testar
 
 1. Abra https://vet-plus.onrender.com
-2. Entre com o usuário demo (criado automaticamente no deploy do auth):
+2. No console do navegador (`F12`), confira `window.__VET_PLUS_ENV__.BUILD_SHA` — deve ser `7071eb8` ou commit mais recente (não `17dbc1d`)
+3. Entre com o usuário demo (criado automaticamente no deploy do auth):
    - **E-mail:** `admin@vet.com`
    - **Senha:** `senha1234`
-3. Ou registre outro usuário via `/api/register/` na auth
 
 Para desativar a criação automática do demo, defina `SKIP_DEMO_USER=true` no serviço `vet-plus-auth`.
 
 **Importante:** o serviço `vet-plus` precisa da mesma `SECRET_KEY` do auth (grupo `vet-shared` no blueprint) para validar tokens JWT.
+
+### Redeploy manual (se o Render ficou no commit antigo)
+
+1. Render → serviço **vet-plus** → **Manual Deploy** → **Clear build cache & deploy**
+2. Repita em **vet-plus-auth**
+3. Em **vet-plus** → **Environment**, confira se `SECRET_KEY` existe e é **igual** à de **vet-plus-auth**
 
 ---
 

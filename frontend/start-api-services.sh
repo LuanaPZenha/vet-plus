@@ -15,10 +15,10 @@ start_service() {
   gunicorn config.wsgi:application \
     --bind "127.0.0.1:${port}" \
     --workers 1 \
-    --threads 2 \
+    --threads 1 \
+    --worker-class sync \
     --timeout 120 \
-    --access-logfile - \
-    --error-logfile - \
+    --worker-tmp-dir /dev/shm \
     >/tmp/gunicorn-${dir}.log 2>&1 &
   echo $! > "/tmp/gunicorn-${dir}.pid"
   echo "API ${dir} listening on 127.0.0.1:${port}"

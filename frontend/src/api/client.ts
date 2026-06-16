@@ -97,7 +97,16 @@ async function request<T>(
 
   if (!res.ok) {
     const msg = data.error || data.detail || `Erro ${res.status}`;
-    throw new ApiError(typeof msg === "string" ? msg : JSON.stringify(msg), res.status);
+    const text = typeof msg === "string" ? msg : JSON.stringify(msg);
+    if (res.status === 401 || res.status === 403) {
+      throw new ApiError(
+        text.includes("Token") || text.includes("credencial") || text.includes("autentic")
+          ? text
+          : `${text}. Se o login funcionar mas os dados não carregarem, confira se a SECRET_KEY do serviço vet-plus é igual à do vet-plus-auth no Render.`,
+        res.status,
+      );
+    }
+    throw new ApiError(text, res.status);
   }
 
   return data as T;

@@ -2,6 +2,7 @@
 
 interface VetPlusRuntimeEnv {
   USE_API_PROXY?: boolean;
+  BUILD_SHA?: string;
   AUTH_URL?: string;
   CLIENTS_URL?: string;
   ANIMALS_URL?: string;
