@@ -21,6 +21,10 @@ from src.infrastructure.repositories.django_vaccine_reminder_repository import (
     DjangoVaccineReminderRepository,
 )
 from src.infrastructure.repositories.django_vaccine_repository import DjangoVaccineRepository
+from src.infrastructure.services.vaccine_integrations import (
+    get_animal_service,
+    get_medical_history_service,
+)
 from src.infrastructure.services.console_notification_service import ConsoleNotificationService
 from src.presentation.api.serializers.vaccine_serializers import (
     RegisterVaccineSerializer,
@@ -45,6 +49,13 @@ def _reminder_observer(within_days: int | None = None):
         ConsoleNotificationService(),
         within_days=days,
     )
+
+
+def _extract_auth_token(request) -> str | None:
+    auth_header = request.headers.get("Authorization", "")
+    if auth_header.startswith("Bearer "):
+        return auth_header.split(" ", 1)[1]
+    return None
 
 
 class VaccineListCreateView(APIView):
@@ -83,9 +94,12 @@ class VaccineListCreateView(APIView):
             validated["notes"] = None
 
         dto = RegisterVaccineDTO(**validated)
+        auth_token = _extract_auth_token(request)
         use_case = RegisterVaccineUseCase(
             _vaccine_repository(),
             _reminder_repository(),
+            animal_service=get_animal_service(auth_token),
+            medical_history_service=get_medical_history_service(auth_token),
         )
 
         try:

@@ -30,13 +30,28 @@ def _to_response_dto(vaccine) -> "VaccineResponseDTO":
 class RegisterVaccineUseCase:
     """Registra uma nova vacina no sistema."""
 
-    def __init__(self, vaccine_repository, reminder_repository=None):
+    def __init__(
+        self,
+        vaccine_repository,
+        reminder_repository=None,
+        animal_service=None,
+        medical_history_service=None,
+    ):
         self._vaccine_repository = vaccine_repository
         self._reminder_repository = reminder_repository
+        self._animal_service = animal_service
+        self._medical_history_service = medical_history_service
 
     def execute(self, dto) -> "VaccineResponseDTO":
         from src.domain.entities.vaccine import Vaccine
         from src.domain.entities.vaccine_reminder import VaccineReminder
+
+        if self._animal_service is not None:
+            animal = self._animal_service.get_animal(dto.animal_id)
+            if animal is None:
+                raise VaccineRegistrationError(
+                    f"Animal {dto.animal_id} não encontrado. Cadastre o animal antes de registrar a vacina."
+                )
 
         vaccine = Vaccine(
             id=None,
@@ -58,6 +73,16 @@ class RegisterVaccineUseCase:
             )
 
         saved = self._vaccine_repository.save(vaccine)
+
+        if self._medical_history_service is not None:
+            self._medical_history_service.add_record(
+                animal_id=saved.animal_id,
+                description=(
+                    f"Vacina {saved.vaccine_name} aplicada em "
+                    f"{saved.application_date.isoformat()}"
+                ),
+                record_type="vaccination",
+            )
 
         if self._reminder_repository and saved.next_dose_date:
             reminder = VaccineReminder(

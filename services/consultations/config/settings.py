@@ -12,7 +12,7 @@ sys.path.insert(0, str(_shared_dir))
 
 from django_settings import get_common_settings  # noqa: E402
 
-_settings = get_common_settings(BASE_DIR, "Consultas")
+_settings = get_common_settings(BASE_DIR, "Consultas", db_schema="consultations")
 globals().update(_settings)
 
 INSTALLED_APPS = _settings["INSTALLED_APPS"] + ["src.presentation.api"]

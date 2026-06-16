@@ -44,10 +44,12 @@ class ScheduleConsultationUseCase:
         self,
         consultation_repository,
         veterinarian_repository,
+        animal_service=None,
         notification_subject: NotificationSubject | None = None,
     ):
         self._consultation_repository = consultation_repository
         self._veterinarian_repository = veterinarian_repository
+        self._animal_service = animal_service
         self._notification_subject = notification_subject or _default_notification_subject()
 
     def execute(self, dto) -> "ConsultationResponseDTO":
@@ -57,6 +59,13 @@ class ScheduleConsultationUseCase:
             raise ConsultationSchedulingError(
                 f"Veterinário {dto.veterinarian_id} não encontrado."
             )
+
+        if self._animal_service is not None:
+            animal = self._animal_service.get_animal(dto.animal_id)
+            if animal is None:
+                raise ConsultationSchedulingError(
+                    f"Animal {dto.animal_id} não encontrado. Cadastre o animal antes de agendar."
+                )
 
         try:
             consultation_type = ConsultationType(dto.type)

@@ -10,16 +10,18 @@ def get_base_dir() -> Path:
     return Path(__file__).resolve().parent.parent
 
 
-def get_database_config(base_dir: Path) -> dict:
+def get_database_config(base_dir: Path, db_schema: str | None = None) -> dict:
     database_url = os.environ.get("DATABASE_URL")
     if database_url:
-        return {
-            "default": dj_database_url.parse(
-                database_url,
-                conn_max_age=600,
-                conn_health_checks=True,
-            )
-        }
+        config = dj_database_url.parse(
+            database_url,
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
+        if db_schema:
+            config.setdefault("OPTIONS", {})
+            config["OPTIONS"]["options"] = f"-c search_path={db_schema},public"
+        return {"default": config}
     return {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -64,7 +66,11 @@ def get_csrf_trusted_origins() -> list[str]:
     return list(dict.fromkeys(origins))
 
 
-def get_common_settings(base_dir: Path, service_name: str) -> dict:
+def get_common_settings(
+    base_dir: Path,
+    service_name: str,
+    db_schema: str | None = None,
+) -> dict:
     secret_key = os.environ.get("SECRET_KEY", "dev-insecure-key")
     debug = os.environ.get("DEBUG", "True").lower() in ("true", "1", "yes")
     allowed_hosts = get_allowed_hosts()
@@ -110,7 +116,7 @@ def get_common_settings(base_dir: Path, service_name: str) -> dict:
             },
         ],
         "WSGI_APPLICATION": "config.wsgi.application",
-        "DATABASES": get_database_config(base_dir),
+        "DATABASES": get_database_config(base_dir, db_schema=db_schema),
         "AUTH_PASSWORD_VALIDATORS": [
             {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
             {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},

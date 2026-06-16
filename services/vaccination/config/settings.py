@@ -12,7 +12,7 @@ sys.path.insert(0, str(_shared_dir))
 
 from django_settings import get_common_settings  # noqa: E402
 
-_settings = get_common_settings(BASE_DIR, "Vacinação")
+_settings = get_common_settings(BASE_DIR, "Vacinação", db_schema="vaccination")
 globals().update(_settings)
 
 INSTALLED_APPS = _settings["INSTALLED_APPS"] + ["src.presentation.api"]
@@ -30,3 +30,5 @@ REST_FRAMEWORK = {
 VACCINE_REMINDER_DAYS_AHEAD = int(
     __import__("os").environ.get("VACCINE_REMINDER_DAYS_AHEAD", "7")
 )
+
+ANIMALS_SERVICE_URL = __import__("os").environ.get("ANIMALS_SERVICE_URL", "http://127.0.0.1:8003")

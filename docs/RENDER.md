@@ -60,4 +60,11 @@ Para desativar a criação automática do demo, defina `SKIP_DEMO_USER=true` no 
 
 ## Plano free
 
-O frontend hiberna após ~15 min sem uso. A primeira requisição pode demorar ~50s. São 2 web services (frontend + auth) + 1 banco (auth).
+O frontend hiberna após ~15 min sem uso. A primeira requisição pode demorar ~50s. São 2 web services (frontend + auth) + 2 bancos:
+
+| Banco | Uso |
+|-------|-----|
+| **vet-auth-db** | Usuários e login |
+| **vet-app-db** | Tutores, animais, consultas, vacinas e estoque (schemas separados no mesmo Postgres) |
+
+Cada microsserviço embutido no `vet-plus` usa um **schema PostgreSQL próprio** (`animals`, `vaccination`, etc.), mas compartilha o mesmo `DATABASE_URL`. Assim os dados persistem entre redeploys e os serviços se comunicam via HTTP (ex.: vacina valida se o animal existe antes de salvar).

@@ -25,8 +25,8 @@ from src.domain.patterns.facade.veterinary_service_facade import VeterinaryServi
 from src.infrastructure.repositories.django_consultation_repository import DjangoConsultationRepository
 from src.infrastructure.repositories.django_veterinarian_repository import DjangoVeterinarianRepository
 from src.infrastructure.services.animal_services import (
-    InMemoryAnimalService,
-    InMemoryMedicalHistoryService,
+    HttpAnimalService,
+    HttpMedicalHistoryService,
 )
 from src.presentation.api.serializers.consultation_serializers import (
     CompleteConsultationSerializer,
@@ -45,11 +45,22 @@ def _get_veterinarian_repository():
     return DjangoVeterinarianRepository()
 
 
+def _extract_auth_token(request) -> str | None:
+    auth_header = request.headers.get("Authorization", "")
+    if auth_header.startswith("Bearer "):
+        return auth_header.split(" ", 1)[1]
+    return None
+
+
+def _get_animal_service(auth_token: str | None = None) -> HttpAnimalService:
+    return HttpAnimalService(auth_token=auth_token)
+
+
 def _get_facade(auth_token: str | None = None) -> VeterinaryServiceFacade:
-    """Monta o Facade com serviços de animal (in-memory para operação local)."""
+    """Monta o Facade com integração HTTP ao microsserviço de animais."""
     return VeterinaryServiceFacade(
-        animal_service=InMemoryAnimalService(),
-        medical_history_service=InMemoryMedicalHistoryService(),
+        animal_service=HttpAnimalService(auth_token=auth_token),
+        medical_history_service=HttpMedicalHistoryService(auth_token=auth_token),
         consultation_repository=_get_consultation_repository(),
     )
 
@@ -89,6 +100,7 @@ class ConsultationListCreateView(APIView):
         use_case = ScheduleConsultationUseCase(
             _get_consultation_repository(),
             _get_veterinarian_repository(),
+            animal_service=_get_animal_service(_extract_auth_token(request)),
         )
         dto = ScheduleConsultationDTO(**serializer.validated_data)
 
@@ -133,10 +145,7 @@ class ConsultationCompleteView(APIView):
         serializer = CompleteConsultationSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        auth_token = None
-        auth_header = request.headers.get("Authorization", "")
-        if auth_header.startswith("Bearer "):
-            auth_token = auth_header.split(" ", 1)[1]
+        auth_token = _extract_auth_token(request)
 
         use_case = CompleteConsultationUseCase(
             _get_consultation_repository(),

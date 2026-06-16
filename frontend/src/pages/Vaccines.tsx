@@ -24,9 +24,24 @@ export function VaccinesPage() {
 
   const load = () => {
     setLoading(true);
-    Promise.all([api.getVaccines(), api.getUpcomingVaccines(), api.getAnimals(), api.getVeterinarians()])
-      .then(([v, u, a, vt]) => { setVaccines(v); setUpcoming(u); setAnimals(a); setVets(vt); })
-      .catch(() => toast("Erro ao carregar vacinas", "error"))
+    Promise.all([
+      api.getVaccines().catch(() => [] as Vaccine[]),
+      api.getUpcomingVaccines().catch(() => [] as UpcomingVaccine[]),
+      api.getAnimals(),
+      api.getVeterinarians().catch(() => [] as Veterinarian[]),
+    ])
+      .then(([v, u, a, vt]) => {
+        setVaccines(v);
+        setUpcoming(u);
+        setAnimals(a);
+        setVets(vt);
+        if (a.length === 0) {
+          toast("Cadastre um animal em Animais antes de registrar vacinas.", "error");
+        } else if (vt.length === 0) {
+          toast("Cadastre um veterinário antes de registrar vacinas.", "error");
+        }
+      })
+      .catch(() => toast("Erro ao carregar dados. Verifique se tutores e animais estão cadastrados.", "error"))
       .finally(() => setLoading(false));
   };
 

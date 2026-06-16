@@ -178,6 +178,26 @@ class TestRegisterVaccineUseCase:
         with pytest.raises(VaccineRegistrationError):
             use_case.execute(dto)
 
+    def test_register_vaccine_rejects_unknown_animal(self):
+        repo = MagicMock()
+        animal_service = MagicMock()
+        animal_service.get_animal.return_value = None
+        use_case = RegisterVaccineUseCase(repo, animal_service=animal_service)
+        dto = RegisterVaccineDTO(
+            animal_id=99,
+            vaccine_name="V10",
+            application_date=date(2026, 6, 10),
+            next_dose_date=None,
+            veterinarian_id=1,
+            batch_number=None,
+            notes=None,
+        )
+
+        with pytest.raises(VaccineRegistrationError, match="Animal 99 não encontrado"):
+            use_case.execute(dto)
+
+        repo.save.assert_not_called()
+
 
 class TestListVaccinesUseCase:
     """TDD: Caso de uso ListVaccines."""
