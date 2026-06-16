@@ -48,21 +48,6 @@ Serviços necessários: apenas **vet-plus** (frontend + APIs) e **vet-plus-auth*
 
 Para desativar a criação automática do demo, defina `SKIP_DEMO_USER=true` no serviço `vet-plus-auth`.
 
-### Dados demo automáticos (3 de cada)
-
-No deploy, o sistema cria automaticamente **3 registros de exemplo** em cada microsserviço:
-
-| Serviço | Exemplos |
-|---------|----------|
-| **Auth** | `admin@vet.com`, `dr.silva@vet.com`, `dr.costa@vet.com` (senha: `senha1234`) |
-| **Clientes** | Maria Souza, Carlos Lima, Ana Costa |
-| **Animais** | Rex, Mimi, Thor (vinculados aos tutores) |
-| **Consultas** | 3 veterinários + 3 consultas agendadas |
-| **Vacinas** | V10, Antirrábica, Giardia (vinculadas aos animais) |
-| **Estoque** | Amoxicilina, Dipirona, Vacina V10 |
-
-Para desativar o seed dos microsserviços embutidos, defina `SKIP_DEMO_DATA=true` no serviço `vet-plus`.
-
 **Importante:** o serviço `vet-plus` precisa da mesma `SECRET_KEY` do auth (grupo `vet-shared` no blueprint) para validar tokens JWT.
 
 ### Redeploy manual (se o Render ficou no commit antigo)
