@@ -29,6 +29,13 @@ function useApiProxy(): boolean {
   return runtime?.USE_API_PROXY === true;
 }
 
+function authServiceBase(): string {
+  const runtime = typeof window !== "undefined" ? window.__VET_PLUS_ENV__ : undefined;
+  if (runtime?.AUTH_URL) return runtime.AUTH_URL.replace(/\/$/, "");
+  if (import.meta.env.DEV) return "";
+  return RENDER_DEFAULTS.AUTH_URL;
+}
+
 function serviceBase(runtimeKey: ServiceUrlKey, viteKey: string): string {
   if (useApiProxy() || import.meta.env.DEV) return "";
   const runtime = typeof window !== "undefined" ? window.__VET_PLUS_ENV__ : undefined;
@@ -98,11 +105,20 @@ async function request<T>(
   if (!res.ok) {
     const msg = data.error || data.detail || `Erro ${res.status}`;
     const text = typeof msg === "string" ? msg : JSON.stringify(msg);
-    if (res.status === 401 || res.status === 403) {
+    const isAuthRoute = url.includes("/api/login") || url.includes("/api/register");
+    if ((res.status === 401 || res.status === 403) && !isAuthRoute) {
       throw new ApiError(
         text.includes("Token") || text.includes("credencial") || text.includes("autentic")
           ? text
           : `${text}. Se o login funcionar mas os dados não carregarem, confira se a SECRET_KEY do serviço vet-plus é igual à do vet-plus-auth no Render.`,
+        res.status,
+      );
+    }
+    if (isAuthRoute && res.status >= 400) {
+      throw new ApiError(
+        res.status === 421 || text.startsWith("Erro 4")
+          ? "Não foi possível conectar ao serviço de autenticação. Tente novamente em alguns segundos."
+          : text,
         res.status,
       );
     }
@@ -115,13 +131,13 @@ async function request<T>(
 export const api = {
   login: (email: string, password: string) =>
     request<{ access_token: string; user_id: number; email: string; role: string; full_name: string }>(
-      apiUrl(serviceBase("AUTH_URL", "VITE_AUTH_URL"), "/api/login/"),
+      apiUrl(authServiceBase(), "/api/login/"),
       { method: "POST", body: JSON.stringify({ email, password }) },
       false,
     ),
 
   register: (data: { email: string; password: string; full_name: string; role: string }) =>
-    request(apiUrl(serviceBase("AUTH_URL", "VITE_AUTH_URL"), "/api/register/"), { method: "POST", body: JSON.stringify(data) }, false),
+    request(apiUrl(authServiceBase(), "/api/register/"), { method: "POST", body: JSON.stringify(data) }, false),
 
   getClients: () => request<Client[]>(apiUrl(serviceBase("CLIENTS_URL", "VITE_CLIENTS_URL"), "/api/clientes/")),
   createClient: (data: { nome_completo: string; email: string; telefone: string; cpf: string; endereco: string }) =>

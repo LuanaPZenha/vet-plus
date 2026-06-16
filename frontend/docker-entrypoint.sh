@@ -12,6 +12,7 @@ export AUTH_VERIFY_URL="${AUTH_VERIFY_URL:-${AUTH_URL}/api/verify-token/}"
 cat > /usr/share/nginx/html/config.js <<EOF
 window.__VET_PLUS_ENV__ = {
   USE_API_PROXY: true,
+  AUTH_URL: "${AUTH_URL}",
   BUILD_SHA: "${RENDER_GIT_COMMIT:-desconhecido}"
 };
 EOF
