@@ -116,7 +116,7 @@ services:
       DATABASE_URL: postgres://vet_user:${DB_PASSWORD:-vet_secret_2024}@auth-db:5432/auth_db
       SECRET_KEY: ${SECRET_KEY:-django-insecure-vet-auth-key-change-in-production}
       DEBUG: ${DEBUG:-False}
-      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1,auth-service}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1,auth-service,.onrender.com}
     depends_on:
       auth-db:
         condition: service_healthy

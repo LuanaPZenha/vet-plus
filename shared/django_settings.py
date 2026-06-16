@@ -28,15 +28,28 @@ def get_database_config(base_dir: Path) -> dict:
     }
 
 
+def get_allowed_hosts() -> list[str]:
+    """Hosts permitidos: env ALLOWED_HOSTS + defaults para deploy em cloud."""
+    defaults = ["localhost", "127.0.0.1", ".onrender.com", ".railway.app"]
+    env_value = os.environ.get("ALLOWED_HOSTS", "")
+    from_env = [h.strip() for h in env_value.split(",") if h.strip()]
+    return list(dict.fromkeys(from_env + defaults))
+
+
 def get_common_settings(base_dir: Path, service_name: str) -> dict:
     secret_key = os.environ.get("SECRET_KEY", "dev-insecure-key")
     debug = os.environ.get("DEBUG", "True").lower() in ("true", "1", "yes")
-    allowed_hosts = os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+    allowed_hosts = get_allowed_hosts()
 
     return {
         "SECRET_KEY": secret_key,
         "DEBUG": debug,
-        "ALLOWED_HOSTS": [h.strip() for h in allowed_hosts if h.strip()],
+        "ALLOWED_HOSTS": allowed_hosts,
+        "CSRF_TRUSTED_ORIGINS": [
+            "https://*.onrender.com",
+            "http://localhost:3000",
+            "http://127.0.0.1:3000",
+        ],
         "INSTALLED_APPS": [
             "django.contrib.admin",
             "django.contrib.auth",

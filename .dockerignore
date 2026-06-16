@@ -1,0 +1,13 @@
+# Build Render/local auth — contexto na raiz
+.git
+.env
+*.md
+docs/
+frontend/
+node_modules/
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+**/tests/
+**/*.feature
+scripts/
