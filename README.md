@@ -113,34 +113,34 @@ src/
 
 ```mermaid
 graph TB
-    subgraph Frontend
-        FE[React + nginx :3000]
+    subgraph fe_group [Frontend]
+        FE["React nginx port 3000"]
     end
 
-    subgraph Microsserviços
-        AUTH[Auth :8001]
-        CLI[Clients :8002]
-        ANI[Animals :8003]
-        CON[Consultations :8004]
-        VAC[Vaccination :8005]
-        INV[Inventory :8006]
+    subgraph ms_group [Microsservicos]
+        AUTH["Auth 8001"]
+        CLI["Clients 8002"]
+        ANI["Animals 8003"]
+        CON["Consultations 8004"]
+        VAC["Vaccination 8005"]
+        INV["Inventory 8006"]
     end
 
-    subgraph PostgreSQL
-        DB1[(auth_db)]
-        DB2[(clients_db)]
-        DB3[(animals_db)]
-        DB4[(consultations_db)]
-        DB5[(vaccination_db)]
-        DB6[(inventory_db)]
+    subgraph db_group [PostgreSQL]
+        DB1[("auth_db")]
+        DB2[("clients_db")]
+        DB3[("animals_db")]
+        DB4[("consultations_db")]
+        DB5[("vaccination_db")]
+        DB6[("inventory_db")]
     end
 
-    FE -->|/api/login| AUTH
-    FE -->|/api/clientes| CLI
-    FE -->|/api/animais| ANI
-    FE -->|/api/consultas| CON
-    FE -->|/api/vacinas| VAC
-    FE -->|/api/medicamentos| INV
+    FE --> AUTH
+    FE --> CLI
+    FE --> ANI
+    FE --> CON
+    FE --> VAC
+    FE --> INV
 
     AUTH --> DB1
     CLI --> DB2
@@ -149,24 +149,24 @@ graph TB
     VAC --> DB5
     INV --> DB6
 
-    CLI -.->|verify-token| AUTH
-    ANI -.->|verify-token| AUTH
-    CON -.->|verify-token + HTTP animais| AUTH
-    VAC -.->|verify-token + HTTP animais| AUTH
-    INV -.->|verify-token| AUTH
+    CLI -.-> AUTH
+    ANI -.-> AUTH
+    CON -.-> AUTH
+    VAC -.-> AUTH
+    INV -.-> AUTH
 ```
 
 ### Diagrama — produção (Render)
 
 ```mermaid
 graph LR
-    USER[Usuário] --> VP[vet-plus.onrender.com]
-    VP --> NGINX[nginx + React]
-    NGINX -->|/api/login direto| AUTH[vet-plus-auth.onrender.com]
-    NGINX -->|/api/* proxy local| APIS[5 APIs embutidas<br/>8002–8006]
-    AUTH --> PG[(vet-auth-db)]
+    USER["Usuario"] --> VP["vet-plus.onrender.com"]
+    VP --> NGINX["nginx e React"]
+    NGINX --> AUTH["vet-plus-auth.onrender.com"]
+    NGINX --> APIS["APIs embutidas 8002-8006"]
+    AUTH --> PG[("vet-auth-db")]
     APIS --> PG
-    APIS -.->|AUTH_VERIFY_URL| AUTH
+    APIS -.-> AUTH
 ```
 
 No Render, login/registro vão **direto** ao serviço de auth (evita erro 403/421 do Cloudflare). Demais APIs passam pelo nginx interno do container `vet-plus`.
@@ -271,18 +271,18 @@ Não há foreign keys entre bancos. Relacionamentos usam **IDs inteiros** (`anim
 
 ```mermaid
 sequenceDiagram
-    participant C as Cliente/Browser
-    participant A as Auth Service
-    participant S as Microsserviço
+    participant C as Cliente
+    participant A as Auth
+    participant S as Microservico
 
-    C->>A: POST /api/login/
-    A-->>C: access_token (JWT, 24h)
-    C->>S: GET /api/... Authorization: Bearer token
-    alt AUTH_VERIFY_URL configurado
-        S->>A: POST /api/verify-token/
-        A-->>S: user_id, email, role
+    C->>A: POST login
+    A-->>C: JWT token
+    C->>S: GET com Bearer token
+    alt verify-token configurado
+        S->>A: POST verify-token
+        A-->>S: user_id e role
     else SECRET_KEY local
-        S->>S: Decodifica JWT com SECRET_KEY
+        S->>S: Decodifica JWT
     end
     S-->>C: Resposta autorizada
 ```
