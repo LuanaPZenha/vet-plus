@@ -1,8 +1,8 @@
-# Blueprint Render — stack completa Vet Plus+
+# Blueprint Render — Vet Plus+ (produção simplificada)
 # https://render.com/docs/blueprint-spec
 #
-# vet-plus.onrender.com = frontend (React + nginx proxy)
-# vet-plus-auth.onrender.com = API de autenticação
+# vet-plus.onrender.com     = frontend + APIs embutidas (tutores, animais, etc.)
+# vet-plus-auth.onrender.com = autenticação + verify-token
 
 envVarGroups:
   - name: vet-shared
@@ -14,26 +14,6 @@ databases:
   - name: vet-auth-db
     plan: free
     databaseName: auth_db
-    user: vet_user
-  - name: vet-clients-db
-    plan: free
-    databaseName: clients_db
-    user: vet_user
-  - name: vet-animals-db
-    plan: free
-    databaseName: animals_db
-    user: vet_user
-  - name: vet-consultations-db
-    plan: free
-    databaseName: consultations_db
-    user: vet_user
-  - name: vet-vaccination-db
-    plan: free
-    databaseName: vaccination_db
-    user: vet_user
-  - name: vet-inventory-db
-    plan: free
-    databaseName: inventory_db
     user: vet_user
 
 services:
@@ -56,56 +36,6 @@ services:
           type: web
           name: vet-plus-auth
           property: host
-      - key: CLIENTS_URL
-        fromService:
-          type: web
-          name: vet-plus-clients
-          envVarKey: RENDER_EXTERNAL_URL
-      - key: CLIENTS_HOST
-        fromService:
-          type: web
-          name: vet-plus-clients
-          property: host
-      - key: ANIMALS_URL
-        fromService:
-          type: web
-          name: vet-plus-animals
-          envVarKey: RENDER_EXTERNAL_URL
-      - key: ANIMALS_HOST
-        fromService:
-          type: web
-          name: vet-plus-animals
-          property: host
-      - key: CONSULTATIONS_URL
-        fromService:
-          type: web
-          name: vet-plus-consultations
-          envVarKey: RENDER_EXTERNAL_URL
-      - key: CONSULTATIONS_HOST
-        fromService:
-          type: web
-          name: vet-plus-consultations
-          property: host
-      - key: VACCINATION_URL
-        fromService:
-          type: web
-          name: vet-plus-vaccination
-          envVarKey: RENDER_EXTERNAL_URL
-      - key: VACCINATION_HOST
-        fromService:
-          type: web
-          name: vet-plus-vaccination
-          property: host
-      - key: INVENTORY_URL
-        fromService:
-          type: web
-          name: vet-plus-inventory
-          envVarKey: RENDER_EXTERNAL_URL
-      - key: INVENTORY_HOST
-        fromService:
-          type: web
-          name: vet-plus-inventory
-          property: host
 
   - type: web
     name: vet-plus-auth
@@ -119,121 +49,6 @@ services:
       - key: DATABASE_URL
         fromDatabase:
           name: vet-auth-db
-          property: connectionString
-      - key: DEBUG
-        value: "False"
-      - key: ALLOWED_HOSTS
-        value: ".onrender.com,localhost,127.0.0.1"
-      - key: FRONTEND_URL
-        fromService:
-          type: web
-          name: vet-plus
-          envVarKey: RENDER_EXTERNAL_URL
-
-  - type: web
-    name: vet-plus-clients
-    runtime: docker
-    plan: free
-    dockerfilePath: ./services/clients/Dockerfile
-    dockerContext: .
-    healthCheckPath: /api/docs/
-    envVars:
-      - fromGroup: vet-shared
-      - key: DATABASE_URL
-        fromDatabase:
-          name: vet-clients-db
-          property: connectionString
-      - key: DEBUG
-        value: "False"
-      - key: ALLOWED_HOSTS
-        value: ".onrender.com,localhost,127.0.0.1"
-      - key: FRONTEND_URL
-        fromService:
-          type: web
-          name: vet-plus
-          envVarKey: RENDER_EXTERNAL_URL
-
-  - type: web
-    name: vet-plus-animals
-    runtime: docker
-    plan: free
-    dockerfilePath: ./services/animals/Dockerfile
-    dockerContext: .
-    healthCheckPath: /api/docs/
-    envVars:
-      - fromGroup: vet-shared
-      - key: DATABASE_URL
-        fromDatabase:
-          name: vet-animals-db
-          property: connectionString
-      - key: DEBUG
-        value: "False"
-      - key: ALLOWED_HOSTS
-        value: ".onrender.com,localhost,127.0.0.1"
-      - key: FRONTEND_URL
-        fromService:
-          type: web
-          name: vet-plus
-          envVarKey: RENDER_EXTERNAL_URL
-
-  - type: web
-    name: vet-plus-consultations
-    runtime: docker
-    plan: free
-    dockerfilePath: ./services/consultations/Dockerfile
-    dockerContext: .
-    healthCheckPath: /api/docs/
-    envVars:
-      - fromGroup: vet-shared
-      - key: DATABASE_URL
-        fromDatabase:
-          name: vet-consultations-db
-          property: connectionString
-      - key: DEBUG
-        value: "False"
-      - key: ALLOWED_HOSTS
-        value: ".onrender.com,localhost,127.0.0.1"
-      - key: FRONTEND_URL
-        fromService:
-          type: web
-          name: vet-plus
-          envVarKey: RENDER_EXTERNAL_URL
-
-  - type: web
-    name: vet-plus-vaccination
-    runtime: docker
-    plan: free
-    dockerfilePath: ./services/vaccination/Dockerfile
-    dockerContext: .
-    healthCheckPath: /api/docs/
-    envVars:
-      - fromGroup: vet-shared
-      - key: DATABASE_URL
-        fromDatabase:
-          name: vet-vaccination-db
-          property: connectionString
-      - key: DEBUG
-        value: "False"
-      - key: ALLOWED_HOSTS
-        value: ".onrender.com,localhost,127.0.0.1"
-      - key: FRONTEND_URL
-        fromService:
-          type: web
-          name: vet-plus
-          envVarKey: RENDER_EXTERNAL_URL
-
-  - type: web
-    name: vet-plus-inventory
-    runtime: docker
-    plan: free
-    dockerfilePath: ./services/inventory/Dockerfile
-    dockerContext: .
-    healthCheckPath: /api/docs/
-    envVars:
-      - fromGroup: vet-shared
-      - key: DATABASE_URL
-        fromDatabase:
-          name: vet-inventory-db
           property: connectionString
       - key: DEBUG
         value: "False"

@@ -30,7 +30,11 @@ Se hoje `vet-plus` roda a API de auth:
 ## Blueprint (recomendado)
 
 1. Push para `main`
-2. Render → **New +** → **Blueprint** → repo `LuanaPZenha/vet-plus` → **Apply**
+2. Render → Blueprint **vet-plus** → **Manual sync**
+3. Confirme que o sync aponta para o commit mais recente (ex.: `fa18a18` ou posterior)
+4. Aguarde redeploy de **vet-plus** e **vet-plus-auth**
+
+Serviços necessários: apenas **vet-plus** (frontend + APIs) e **vet-plus-auth** (login). Os microsserviços separados (`vet-plus-clients`, etc.) **não são mais usados** — pode removê-los manualmente no Render se existirem.
 
 ---
 
