@@ -704,6 +704,8 @@ curl -X POST http://localhost:8005/api/vacinas/ \
 
 ## Testes
 
+Guia completo (pirâmide de testes, TDD, BDD, fixtures, comandos): [docs/JUSTIFICATIVA.md — seção 8](docs/JUSTIFICATIVA.md#8-como-funcionam-os-testes-no-vet-plus).
+
 ### Pytest (TDD) — unitário e integração
 
 ```bash
@@ -746,6 +748,7 @@ behave features/
 
 | Documento | Conteúdo |
 |-----------|----------|
+| [docs/JUSTIFICATIVA.md](docs/JUSTIFICATIVA.md) | Problema de negócio, justificativa técnica e guia completo de testes |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Arquitetura Limpa e microsserviços em profundidade |
 | [docs/SOLID.md](docs/SOLID.md) | Princípios SOLID com exemplos do código |
 | [docs/DESIGN_PATTERNS.md](docs/DESIGN_PATTERNS.md) | Factory, Strategy, Repository, Facade, Observer |
